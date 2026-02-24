@@ -6,20 +6,86 @@
 <title>Cardápio Digital</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f2f2f2;padding-bottom:450px;}
-header{background:#25D366;color:white;padding:20px;text-align:center;font-size:22px;font-weight:bold;}
-.produto{background:white;margin:10px;border-radius:10px;padding:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.contador button{padding:5px 10px;margin:3px;background:#25D366;color:white;border:none;border-radius:5px;}
-.carrinho{
-position:fixed;bottom:0;left:0;width:100%;
-background:white;padding:15px;
-box-shadow:0 -2px 5px rgba(0,0,0,0.2);
-max-height:70%;
-overflow:auto;
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#ffffff;
+color:#333;
+overflow-x:hidden;
 }
-input, select{width:100%;padding:6px;margin-top:5px;margin-bottom:8px;}
-.total{font-weight:bold;margin-top:5px;}
-button.finalizar{background:#000;color:white;padding:10px;border:none;border-radius:5px;width:100%;}
+
+header{
+background:#d90429;
+color:white;
+padding:20px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+
+.etapa{
+position:absolute;
+width:100%;
+top:80px;
+left:0;
+padding:15px;
+opacity:0;
+transform:translateX(100%);
+transition:0.4s ease;
+}
+
+.ativa{
+opacity:1;
+transform:translateX(0);
+position:relative;
+}
+
+.produto{
+background:#fff;
+border:2px solid #d90429;
+margin:10px 0;
+border-radius:10px;
+padding:10px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.contador button{
+background:#d90429;
+color:white;
+border:none;
+padding:6px 12px;
+margin:5px;
+border-radius:6px;
+font-weight:bold;
+}
+
+button{
+background:#d90429;
+color:white;
+border:none;
+padding:10px;
+border-radius:6px;
+width:100%;
+margin-top:15px;
+font-weight:bold;
+}
+
+button.voltar{
+background:#aaa;
+}
+
+input, select{
+width:100%;
+padding:8px;
+margin-top:8px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+.total{
+font-weight:bold;
+margin-top:10px;
+}
 </style>
 </head>
 
@@ -27,41 +93,34 @@ button.finalizar{background:#000;color:white;padding:10px;border:none;border-rad
 
 <header>🍔 Lanchonete do Alessandro</header>
 
-<div class="produto">
-<h3>X-Burger - R$ 18</h3>
-<div class="contador">
-<button onclick="diminuir('X-Burger',18)">-</button>
-<span id="qtd-X-Burger">0</span>
-<button onclick="aumentar('X-Burger',18)">+</button>
-</div>
-</div>
+<!-- ETAPA 1 -->
+<div id="etapa1" class="etapa ativa">
 
 <div class="produto">
-<h3>X-Tudo - R$ 25</h3>
-<div class="contador">
-<button onclick="diminuir('X-Tudo',25)">-</button>
-<span id="qtd-X-Tudo">0</span>
-<button onclick="aumentar('X-Tudo',25)">+</button>
-</div>
+<h3>X Burger - R$ 18</h3>
+<button onclick="alterar('xburger',18,-1)">-</button>
+<span id="qtd_xburger">0</span>
+<button onclick="alterar('xburger',18,1)">+</button>
 </div>
 
-<div class="carrinho">
-
-<div id="lista"></div>
-
-<label>Cupom de desconto:</label>
-<input type="text" id="cupom" placeholder="Digite o cupom">
-<button onclick="aplicarCupom()">Aplicar Cupom</button>
+<div class="produto">
+<h3>X Tudo - R$ 25</h3>
+<button onclick="alterar('xtudo',25,-1)">-</button>
+<span id="qtd_xtudo">0</span>
+<button onclick="alterar('xtudo',25,1)">+</button>
+</div>
 
 <div class="total">
-Subtotal: R$ <span id="subtotal">0</span><br>
-Desconto: R$ <span id="desconto">0</span><br>
-Total: R$ <span id="total">0</span>
+Subtotal: R$ <span id="subtotal1">0.00</span>
 </div>
 
-<hr>
+<button onclick="irPara(2)">Continuar</button>
+</div>
 
-<label>Seu Nome:</label>
+<!-- ETAPA 2 -->
+<div id="etapa2" class="etapa">
+
+<label>Nome:</label>
 <input type="text" id="nome">
 
 <label>Telefone:</label>
@@ -76,6 +135,24 @@ Total: R$ <span id="total">0</span>
 <label>Observação:</label>
 <input type="text" id="obs">
 
+<button class="voltar" onclick="irPara(1)">Voltar</button>
+<button onclick="irPara(3)">Continuar</button>
+
+</div>
+
+<!-- ETAPA 3 -->
+<div id="etapa3" class="etapa">
+
+<label>Cupom:</label>
+<input type="text" id="cupom">
+<button onclick="aplicarCupom()">Aplicar Cupom</button>
+
+<div class="total">
+Subtotal: R$ <span id="subtotal">0.00</span><br>
+Desconto: R$ <span id="desconto">0.00</span><br>
+Total: R$ <span id="total">0.00</span>
+</div>
+
 <label>Forma de pagamento:</label>
 <select id="pagamento">
 <option>Pix</option>
@@ -83,91 +160,96 @@ Total: R$ <span id="total">0</span>
 <option>Dinheiro</option>
 </select>
 
-<label>Precisa de troco?</label>
-<input type="text" id="troco" placeholder="Ex: 50">
+<label>Troco para:</label>
+<input type="text" id="troco">
 
-<button class="finalizar" onclick="finalizar()">Enviar Pedido</button>
+<button class="voltar" onclick="irPara(2)">Voltar</button>
+<button onclick="finalizar()">Enviar Pedido</button>
 
 </div>
 
 <script>
-let carrinho={};
-let subtotal=0;
+
+let carrinho={
+xburger:{nome:"X Burger",preco:18,qtd:0},
+xtudo:{nome:"X Tudo",preco:25,qtd:0}
+};
+
 let desconto=0;
 
-function aumentar(nome,preco){
-if(!carrinho[nome]) carrinho[nome]={qtd:0,preco:preco};
-carrinho[nome].qtd++;
-subtotal+=preco;
-document.getElementById("qtd-"+nome).innerText=carrinho[nome].qtd;
+function alterar(id,preco,valor){
+carrinho[id].qtd+=valor;
+if(carrinho[id].qtd<0) carrinho[id].qtd=0;
+document.getElementById("qtd_"+id).innerText=carrinho[id].qtd;
 atualizar();
 }
 
-function diminuir(nome,preco){
-if(carrinho[nome] && carrinho[nome].qtd>0){
-carrinho[nome].qtd--;
-subtotal-=preco;
-document.getElementById("qtd-"+nome).innerText=carrinho[nome].qtd;
+function calcularSubtotal(){
+let soma=0;
+for(let item in carrinho){
+soma+=carrinho[item].qtd*carrinho[item].preco;
 }
-atualizar();
+return soma;
+}
+
+function atualizar(){
+let subtotal=calcularSubtotal();
+document.getElementById("subtotal1").innerText=subtotal.toFixed(2);
+document.getElementById("subtotal").innerText=subtotal.toFixed(2);
+document.getElementById("desconto").innerText=desconto.toFixed(2);
+document.getElementById("total").innerText=(subtotal-desconto).toFixed(2);
 }
 
 function aplicarCupom(){
 let cupom=document.getElementById("cupom").value;
+let subtotal=calcularSubtotal();
 
 if(cupom==="DESCONTO10"){
 desconto=subtotal*0.10;
-}
-else if(cupom==="PROMO20"){
-desconto=20;
-}
-else{
+}else{
 desconto=0;
 alert("Cupom inválido");
 }
 atualizar();
 }
 
-function atualizar(){
-document.getElementById("subtotal").innerText=subtotal.toFixed(2);
-document.getElementById("desconto").innerText=desconto.toFixed(2);
-document.getElementById("total").innerText=(subtotal-desconto).toFixed(2);
+function irPara(num){
+document.querySelectorAll(".etapa").forEach(div=>{
+div.classList.remove("ativa");
+});
+document.getElementById("etapa"+num).classList.add("ativa");
+atualizar();
 }
 
 function finalizar(){
 
-let nome=document.getElementById("nome").value;
-let telefone=document.getElementById("telefone").value;
-let endereco=document.getElementById("endereco").value;
-let bairro=document.getElementById("bairro").value;
-let obs=document.getElementById("obs").value;
-let pagamento=document.getElementById("pagamento").value;
-let troco=document.getElementById("troco").value;
+let subtotal=calcularSubtotal();
 let totalFinal=(subtotal-desconto).toFixed(2);
 
 let mensagem="*NOVO PEDIDO*%0A%0A";
-mensagem+="Nome: "+nome+"%0A";
-mensagem+="Telefone: "+telefone+"%0A";
-mensagem+="Endereço: "+endereco+"%0A";
-mensagem+="Bairro: "+bairro+"%0A";
-mensagem+="Observação: "+obs+"%0A%0A";
+mensagem+="Nome: "+nome.value+"%0A";
+mensagem+="Telefone: "+telefone.value+"%0A";
+mensagem+="Endereço: "+endereco.value+"%0A";
+mensagem+="Bairro: "+bairro.value+"%0A";
+mensagem+="Obs: "+obs.value+"%0A%0A";
+
 mensagem+="*Itens:*%0A";
 
 for(let item in carrinho){
 if(carrinho[item].qtd>0){
-mensagem+=item+" x"+carrinho[item].qtd+"%0A";
+mensagem+=carrinho[item].nome+" x"+carrinho[item].qtd+"%0A";
 }
 }
-
 mensagem+="%0ATotal: R$ "+totalFinal+"%0A";
-mensagem+="Pagamento: "+pagamento+"%0A";
+mensagem+="Pagamento: "+pagamento.value+"%0A";
 
-if(pagamento==="Dinheiro" && troco!=""){
-mensagem+="Troco para: R$ "+troco+"%0A";
+if(pagamento.value==="Dinheiro"){
+mensagem+="Troco para: "+troco.value+"%0A";
 }
-
 window.open("https://wa.me/5521999999999?text="+mensagem);
+
 }
+
 </script>
 
 </body>
