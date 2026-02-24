@@ -6,16 +6,19 @@
 <title>Cantinho do Empadão</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#333;overflow-x:hidden;}
-header{background:#d90429;color:white;padding:15px;text-align:center;font-size:20px;font-weight:bold;display:flex;align-items:center;justify-content:center;}
-header img{height:40px;margin-right:10px;vertical-align:middle;border-radius:5px;}
+header{background:#d90429;color:white;padding:15px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+header img{height:120px;border-radius:10px;margin-top:10px;}
+header h1{margin:0;color:white;}
 h2{margin-top:15px;color:#fff;background:#d90429;padding:5px;border-radius:5px;}
-.etapa{position:absolute;width:100%;top:70px;left:0;padding:10px;opacity:0;transform:translateX(100%);transition:0.4s ease;}
+.etapa{position:absolute;width:100%;top:150px;left:0;padding:10px;opacity:0;transform:translateX(100%);transition:0.4s ease;}
 .ativa{opacity:1;transform:translateX(0);position:relative;}
 .produto{background:#fff;border:2px solid #d90429;margin:5px 0;border-radius:10px;padding:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
 .produto-info{margin-bottom:5px;font-size:13px;}
 .produto-contador{display:flex;align-items:center;gap:2px;margin-top:3px;}
-.produto-contador button{background:#d90429;color:white;border:none;padding:1px 4px;border-radius:4px;font-weight:bold;font-size:10px;}
-.produto-contador span{min-width:18px;text-align:center;display:inline-block;font-size:12px;}
+.produto-contador button{
+    background:#d90429;color:white;border:none;padding:1px 2px;border-radius:4px;font-weight:bold;font-size:8px;width:20px;
+}
+.produto-contador span{min-width:16px;text-align:center;display:inline-block;font-size:10px;}
 select{width:100%;padding:3px;margin-top:3px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
 button{background:#d90429;color:white;border:none;padding:6px;border-radius:6px;width:100%;margin-top:8px;font-weight:bold;font-size:12px;}
 button.voltar{background:#aaa;}
@@ -26,8 +29,8 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 <body>
 
 <header>
-  <img src="Logoep.jpg" alt="Logo">
-  🥟 Cantinho do Empadão
+<h1>🥟 Cantinho do Empadão</h1>
+<img src="Logoep.jpg" alt="Logo">
 </header>
 
 <!-- ETAPA 1 - Cardápio -->
@@ -106,7 +109,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <div class="produto">
 <div class="produto-info">
-<h3>Coca-Cola Lata</h3>
+<h3>Coca-Cola Lata 550ml</h3>
 <p>R$ 6,00</p>
 </div>
 <div class="produto-contador">
@@ -188,11 +191,12 @@ frango_requeijao:{nome:"Empadão de Frango com Requeijão",preco:20,qtd:0,milho:
 frango_catupiry:{nome:"Empadão de Frango com Catupiry",preco:22,qtd:0,milho:false},
 frango_simples:{nome:"Empadão de Frango Simples",preco:18,qtd:0,milho:false},
 guaracrack:{nome:"Guaracrack",preco:6,qtd:0},
-coca_lata:{nome:"Coca-Cola Lata",preco:6,qtd:0},
+coca_lata:{nome:"Coca-Cola Lata 550ml",preco:6,qtd:0},
 guarana_lata:{nome:"Guaraná Lata 550ml",preco:6,qtd:0}
 };
 let desconto=0;
 
+// Funções do carrinho
 function alterar(id,preco,valor){
 carrinho[id].qtd+=valor;
 if(carrinho[id].qtd<0)carrinho[id].qtd=0;
@@ -216,11 +220,20 @@ document.getElementById("desconto").innerText=desconto.toFixed(2);
 document.getElementById("total").innerText=(subtotal-desconto).toFixed(2);
 }
 
+// Cupom avançado conectado ao painel
 function aplicarCupom(){
-let cupom=document.getElementById("cupom").value;
-let subtotal=calcularSubtotal();
-if(cupom==="DESCONTO10"){desconto=subtotal*0.10;}else{desconto=0;alert("Cupom inválido");}
-atualizar();
+    let cupom = document.getElementById("cupom").value.trim().toUpperCase();
+    let subtotal = calcularSubtotal();
+    let cupons = JSON.parse(localStorage.getItem('cupons')) || {};
+
+    if(cupons[cupom] && cupons[cupom].ativo){
+        desconto = subtotal * (cupons[cupom].valor/100);
+        alert("Cupom aplicado: " + cupons[cupom].valor + "% de desconto!");
+    } else {
+        desconto = 0;
+        alert("Cupom inválido ou desativado!");
+    }
+    atualizar();
 }
 
 function irPara(num){
@@ -234,7 +247,7 @@ let pagamento=document.getElementById("pagamento").value;
 document.getElementById("campoTroco").style.display=(pagamento==="Dinheiro")?"block":"none";
 }
 
-// Localização real completa com fallback
+// Localização real completa
 function pegarEndereco(){
 if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(function(pos){
@@ -244,7 +257,7 @@ fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=
 .then(res=>res.json())
 .then(data=>{
 if(data.address){
-let rua = data.address.road || data.address.pedestrian || data.address.footway || "";
+let rua = data.address.road || data.address.pedestrian || "";
 let numero = data.address.house_number || "";
 let bairro = data.address.suburb || data.address.neighbourhood || "";
 let cidade = data.address.city || data.address.town || data.address.village || "";
@@ -259,6 +272,7 @@ document.getElementById("cep").value = cep;
 }else{alert("Seu dispositivo não suporta GPS.");}
 }
 
+// Finalizar pedido
 function finalizar(){
 let subtotal=calcularSubtotal();
 let totalFinal=(subtotal-desconto).toFixed(2);
