@@ -15,16 +15,20 @@ h2{margin-top:15px;color:#fff;background:#d90429;padding:5px;border-radius:5px;}
 .produto-info{margin-bottom:5px;font-size:13px;}
 .produto-contador{display:flex;align-items:center;gap:2px;margin-top:3px;}
 .produto-contador button{
-    background:#d90429;color:white;border:none;padding:1px 2px;border-radius:4px;font-weight:bold;font-size:10px;width:16px;
+    background:#d90429;color:white;border:none;padding:2px 4px;border-radius:4px;font-weight:bold;font-size:10px;width:22px;
+    transition:0.2s;
 }
-.produto-contador span{min-width:16px;text-align:center;display:inline-block;font-size:10px;}
-select{width:100%;padding:3px;margin-top:3px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
-button{background:#d90429;color:white;border:none;padding:6px;border-radius:6px;width:100%;margin-top:8px;font-weight:bold;font-size:12px;}
+.produto-contador button:hover{transform:scale(1.2);}
+.produto-contador span{min-width:20px;text-align:center;display:inline-block;font-size:10px;}
+select{width:100%;padding:4px;margin-top:3px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
+button{background:#d90429;color:white;border:none;padding:8px;border-radius:6px;width:100%;margin-top:8px;font-weight:bold;font-size:14px;transition:0.2s;}
+button:hover{opacity:0.9;transform:scale(1.02);}
 button.voltar{background:#aaa;}
 input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
-.total{text-align:right;font-weight:bold;margin-top:8px;font-size:14px;}
+.total{text-align:right;font-weight:bold;margin-top:8px;font-size:16px;color:#d90429;}
 #fechado{display:none;text-align:center;margin-top:50px;font-size:18px;color:#d90429;}
 #horarios{margin-top:10px;text-align:center;font-size:14px;}
+#mensagemFinal{display:none;text-align:center;margin-top:20px;font-size:18px;color:green;}
 </style>
 </head>
 <body>
@@ -134,6 +138,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
   <p id="total_guarana550">R$ 0,00</p>
 </div>
 
+<p class="total" id="totalPedido">Total: R$ 0,00</p>
 <button onclick="proximaEtapa(2)">➡ Continuar</button>
 </div>
 
@@ -147,17 +152,20 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 <button onclick="proximaEtapa(3)">➡ Continuar</button>
 </div>
 
-<!-- Etapa 3: Forma de pagamento -->
+<!-- Etapa 3: Pagamento -->
 <div id="step3" class="step">
 <h2>Pagamento</h2>
 <select id="pagamento" onchange="verTroco()">
   <option value="dinheiro">Dinheiro</option>
   <option value="cartao">Cartão</option>
+  <option value="pix">Pix</option>
 </select>
 <input type="number" id="troco" placeholder="Troco para quanto?" style="display:none">
 <button class="voltar" onclick="proximaEtapa(2)">⬅ Voltar</button>
-<button onclick="enviarWhatsApp()">📩 Enviar pedido pelo WhatsApp</button>
+<button onclick="confirmarPedido()">✅ Confirmar Pedido</button>
 </div>
+
+<div id="mensagemFinal">🎉 Obrigado pela compra! Seu pedido foi enviado com sucesso.</div>
 
 <script>
 // Horários
@@ -181,6 +189,7 @@ function conferirHorario(){
     const fechamento = horarios[dia]?parseFloat(horarios[dia][1].replace(':','.')):null;
     if((abertura && horarioAtual>=abertura && horarioAtual<=fechamento) || acessoAdm){
         document.getElementById('step1').style.display='block';
+        atualizarTotal();
     } else {
         document.getElementById('fechado').style.display='block';
         document.getElementById('horarios').innerHTML=horariosTexto.join('<br>');
@@ -201,12 +210,32 @@ function alterar(id,preco,quant){
     if(qtd<0) qtd=0;
     qtdElem.innerText=qtd;
     totalElem.innerText="R$ "+(qtd*preco).toFixed(2);
+    atualizarTotal();
+}
+
+// Atualiza total do pedido
+function atualizarTotal(){
+    const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
+    let total=0;
+    produtos.forEach(p=>{
+        const qtd=parseInt(document.getElementById("qtd_"+p).innerText);
+        const preco=parseFloat(document.getElementById("total_"+p).innerText.replace('R$ ',''));
+        total+=preco;
+    });
+    document.getElementById('totalPedido').innerText="Total: R$ "+total.toFixed(2);
 }
 
 // Troco
 function verTroco(){
     const tp=document.getElementById('pagamento').value;
     document.getElementById('troco').style.display=(tp==='dinheiro')?'block':'none';
+}
+
+// Confirmar pedido
+function confirmarPedido(){
+    enviarWhatsApp();
+    document.getElementById('step3').style.display='none';
+    document.getElementById('mensagemFinal').style.display='block';
 }
 
 // WhatsApp
