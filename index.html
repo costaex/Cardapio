@@ -1,49 +1,174 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Cardápio - Lanchonete do Alessandro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardápio Digital</title>
+
 <style>
-body {
-    font-family: Arial;
-    background-color: #111;
-    color: white;
-    text-align: center;
+body{margin:0;font-family:Arial;background:#f2f2f2;padding-bottom:450px;}
+header{background:#25D366;color:white;padding:20px;text-align:center;font-size:22px;font-weight:bold;}
+.produto{background:white;margin:10px;border-radius:10px;padding:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.contador button{padding:5px 10px;margin:3px;background:#25D366;color:white;border:none;border-radius:5px;}
+.carrinho{
+position:fixed;bottom:0;left:0;width:100%;
+background:white;padding:15px;
+box-shadow:0 -2px 5px rgba(0,0,0,0.2);
+max-height:70%;
+overflow:auto;
 }
-.card {
-    background: #222;
-    padding: 15px;
-    margin: 15px;
-    border-radius: 10px;
-}
-button {
-    background: #25D366;
-    border: none;
-    padding: 10px;
-    color: white;
-    border-radius: 5px;
-}
+input, select{width:100%;padding:6px;margin-top:5px;margin-bottom:8px;}
+.total{font-weight:bold;margin-top:5px;}
+button.finalizar{background:#000;color:white;padding:10px;border:none;border-radius:5px;width:100%;}
 </style>
 </head>
+
 <body>
 
-<h1>🍔 Lanchonete do Alessandro</h1>
+<header>🍔 Lanchonete do Alessandro</header>
 
-<div class="card">
-<h2>X-Burger</h2>
-<p>R$ 18,00</p>
-<a href="https://wa.me/5521999999999">
-<button>Comprar no WhatsApp</button>
-</a>
+<div class="produto">
+<h3>X-Burger - R$ 18</h3>
+<div class="contador">
+<button onclick="diminuir('X-Burger',18)">-</button>
+<span id="qtd-X-Burger">0</span>
+<button onclick="aumentar('X-Burger',18)">+</button>
+</div>
 </div>
 
-<div class="card">
-<h2>Batata Frita</h2>
-<p>R$ 15,00</p>
-<a href="https://wa.me/5521999999999">
-<button>Comprar no WhatsApp</button>
-</a>
+<div class="produto">
+<h3>X-Tudo - R$ 25</h3>
+<div class="contador">
+<button onclick="diminuir('X-Tudo',25)">-</button>
+<span id="qtd-X-Tudo">0</span>
+<button onclick="aumentar('X-Tudo',25)">+</button>
 </div>
+</div>
+
+<div class="carrinho">
+
+<div id="lista"></div>
+
+<label>Cupom de desconto:</label>
+<input type="text" id="cupom" placeholder="Digite o cupom">
+<button onclick="aplicarCupom()">Aplicar Cupom</button>
+
+<div class="total">
+Subtotal: R$ <span id="subtotal">0</span><br>
+Desconto: R$ <span id="desconto">0</span><br>
+Total: R$ <span id="total">0</span>
+</div>
+
+<hr>
+
+<label>Seu Nome:</label>
+<input type="text" id="nome">
+
+<label>Telefone:</label>
+<input type="text" id="telefone">
+
+<label>Endereço:</label>
+<input type="text" id="endereco">
+
+<label>Bairro:</label>
+<input type="text" id="bairro">
+
+<label>Observação:</label>
+<input type="text" id="obs">
+
+<label>Forma de pagamento:</label>
+<select id="pagamento">
+<option>Pix</option>
+<option>Cartão</option>
+<option>Dinheiro</option>
+</select>
+
+<label>Precisa de troco?</label>
+<input type="text" id="troco" placeholder="Ex: 50">
+
+<button class="finalizar" onclick="finalizar()">Enviar Pedido</button>
+
+</div>
+
+<script>
+let carrinho={};
+let subtotal=0;
+let desconto=0;
+
+function aumentar(nome,preco){
+if(!carrinho[nome]) carrinho[nome]={qtd:0,preco:preco};
+carrinho[nome].qtd++;
+subtotal+=preco;
+document.getElementById("qtd-"+nome).innerText=carrinho[nome].qtd;
+atualizar();
+}
+
+function diminuir(nome,preco){
+if(carrinho[nome] && carrinho[nome].qtd>0){
+carrinho[nome].qtd--;
+subtotal-=preco;
+document.getElementById("qtd-"+nome).innerText=carrinho[nome].qtd;
+}
+atualizar();
+}
+
+function aplicarCupom(){
+let cupom=document.getElementById("cupom").value;
+
+if(cupom==="DESCONTO10"){
+desconto=subtotal*0.10;
+}
+else if(cupom==="PROMO20"){
+desconto=20;
+}
+else{
+desconto=0;
+alert("Cupom inválido");
+}
+atualizar();
+}
+
+function atualizar(){
+document.getElementById("subtotal").innerText=subtotal.toFixed(2);
+document.getElementById("desconto").innerText=desconto.toFixed(2);
+document.getElementById("total").innerText=(subtotal-desconto).toFixed(2);
+}
+
+function finalizar(){
+
+let nome=document.getElementById("nome").value;
+let telefone=document.getElementById("telefone").value;
+let endereco=document.getElementById("endereco").value;
+let bairro=document.getElementById("bairro").value;
+let obs=document.getElementById("obs").value;
+let pagamento=document.getElementById("pagamento").value;
+let troco=document.getElementById("troco").value;
+let totalFinal=(subtotal-desconto).toFixed(2);
+
+let mensagem="*NOVO PEDIDO*%0A%0A";
+mensagem+="Nome: "+nome+"%0A";
+mensagem+="Telefone: "+telefone+"%0A";
+mensagem+="Endereço: "+endereco+"%0A";
+mensagem+="Bairro: "+bairro+"%0A";
+mensagem+="Observação: "+obs+"%0A%0A";
+mensagem+="*Itens:*%0A";
+
+for(let item in carrinho){
+if(carrinho[item].qtd>0){
+mensagem+=item+" x"+carrinho[item].qtd+"%0A";
+}
+}
+
+mensagem+="%0ATotal: R$ "+totalFinal+"%0A";
+mensagem+="Pagamento: "+pagamento+"%0A";
+
+if(pagamento==="Dinheiro" && troco!=""){
+mensagem+="Troco para: R$ "+troco+"%0A";
+}
+
+window.open("https://wa.me/5521999999999?text="+mensagem);
+}
+</script>
 
 </body>
 </html>
