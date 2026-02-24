@@ -29,6 +29,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 #fechado{display:none;text-align:center;margin-top:50px;font-size:18px;color:#d90429;}
 #horarios{margin-top:10px;text-align:center;font-size:14px;}
 #mensagemFinal{display:none;text-align:center;margin-top:20px;font-size:18px;color:green;}
+#pixInfo{display:none;text-align:center;margin-top:5px;font-size:14px;color:#d90429;background:#ffeaea;padding:5px;border-radius:5px;}
 </style>
 </head>
 <body>
@@ -161,6 +162,11 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
   <option value="pix">Pix</option>
 </select>
 <input type="number" id="troco" placeholder="Troco para quanto?" style="display:none">
+<div id="pixInfo">
+<b>Chave Pix:</b> 48092363000120<br>
+<b>Titular:</b> Cantinho do Empadão Ltda
+</div>
+<p class="total" id="totalEtapa3">Total: R$ 0,00</p>
 <button class="voltar" onclick="proximaEtapa(2)">⬅ Voltar</button>
 <button onclick="confirmarPedido()">✅ Confirmar Pedido</button>
 </div>
@@ -200,6 +206,7 @@ function conferirHorario(){
 function proximaEtapa(n){
     document.querySelectorAll('.step').forEach(s=>s.style.display='none');
     document.getElementById('step'+n).style.display='block';
+    atualizarTotalEtapa3();
 }
 
 // Contadores
@@ -218,17 +225,23 @@ function atualizarTotal(){
     const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
     let total=0;
     produtos.forEach(p=>{
-        const qtd=parseInt(document.getElementById("qtd_"+p).innerText);
         const preco=parseFloat(document.getElementById("total_"+p).innerText.replace('R$ ',''));
         total+=preco;
     });
     document.getElementById('totalPedido').innerText="Total: R$ "+total.toFixed(2);
+    atualizarTotalEtapa3();
 }
 
-// Troco
+function atualizarTotalEtapa3(){
+    const total=document.getElementById('totalPedido').innerText.replace('Total: ','');
+    document.getElementById('totalEtapa3').innerText="Total: "+total;
+}
+
+// Troco e Pix
 function verTroco(){
     const tp=document.getElementById('pagamento').value;
     document.getElementById('troco').style.display=(tp==='dinheiro')?'block':'none';
+    document.getElementById('pixInfo').style.display=(tp==='pix')?'block':'none';
 }
 
 // Confirmar pedido
@@ -258,6 +271,7 @@ function enviarWhatsApp(){
     const troco=document.getElementById('troco').value;
     msg+="\nNome: "+nome+"\nTelefone: "+telefone+"\nEndereço: "+endereco+"\nPagamento: "+pagamento;
     if(troco && pagamento==='dinheiro') msg+="\nTroco para: R$ "+troco;
+    if(pagamento==='pix') msg+="\nChave Pix: 48092363000120\nTitular: Cantinho do Empadão Ltda";
     const url="https://wa.me/"+numero+"?text="+encodeURIComponent(msg);
     window.open(url,"_blank");
 }
