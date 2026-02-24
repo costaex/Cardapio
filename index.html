@@ -139,9 +139,13 @@ Subtotal: R$ <span id="subtotal1">0.00</span>
 <input type="text" id="telefone">
 <label>Endereço:</label>
 <input type="text" id="endereco">
-<button onclick="pegarLocalizacao()">📍 Usar localização real</button>
+<button onclick="pegarEndereco()">📍 Usar localização real</button>
 <label>Bairro:</label>
 <input type="text" id="bairro">
+<label>Cidade:</label>
+<input type="text" id="cidade">
+<label>CEP:</label>
+<input type="text" id="cep">
 <label>Observação:</label>
 <input type="text" id="obs">
 <button class="voltar" onclick="irPara(1)">Voltar</button>
@@ -225,12 +229,27 @@ let pagamento=document.getElementById("pagamento").value;
 document.getElementById("campoTroco").style.display=(pagamento==="Dinheiro")?"block":"none";
 }
 
-function pegarLocalizacao(){
+// Pega endereço real completo via Nominatim OpenStreetMap
+function pegarEndereco(){
 if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(function(pos){
-let lat=pos.coords.latitude.toFixed(6);
-let lng=pos.coords.longitude.toFixed(6);
-document.getElementById("endereco").value=`Latitude: ${lat}, Longitude: ${lng}`;
+let lat=pos.coords.latitude;
+let lng=pos.coords.longitude;
+fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+.then(res=>res.json())
+.then(data=>{
+if(data.address){
+let rua = data.address.road || data.address.pedestrian || "";
+let numero = data.address.house_number || "";
+let bairro = data.address.suburb || data.address.village || "";
+let cidade = data.address.city || data.address.town || data.address.county || "";
+let cep = data.address.postcode || "";
+document.getElementById("endereco").value = rua + ", " + numero;
+document.getElementById("bairro").value = bairro;
+document.getElementById("cidade").value = cidade;
+document.getElementById("cep").value = cep;
+}else{alert("Não foi possível obter o endereço.");}
+}).catch(()=>alert("Erro ao buscar endereço."));
 }, function(err){alert("Não foi possível obter a localização.");});
 }else{alert("Seu dispositivo não suporta GPS.");}
 }
@@ -243,6 +262,8 @@ mensagem+="Nome: "+nome.value+"%0A";
 mensagem+="Telefone: "+telefone.value+"%0A";
 mensagem+="Endereço: "+endereco.value+"%0A";
 mensagem+="Bairro: "+bairro.value+"%0A";
+mensagem+="Cidade: "+cidade.value+"%0A";
+mensagem+="CEP: "+cep.value+"%0A";
 mensagem+="Obs: "+obs.value+"%0A%0A";
 mensagem+="*Itens:*%0A";
 for(let item in carrinho){
