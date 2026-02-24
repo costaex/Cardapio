@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Painel Avançado de Cupons</title>
+<style>
+body{font-family:Arial,sans-serif;padding:20px;background:#fff;color:#333;}
+h2{color:#d90429;}
+button{margin:5px;padding:8px 12px;border:none;border-radius:5px;background:#d90429;color:white;cursor:pointer;}
+button.desativar{background:#aaa;}
+#painel{display:none;margin-top:20px;}
+.cupom{margin-bottom:10px;border:1px solid #d90429;padding:5px;border-radius:5px;}
+</style>
+</head>
+<body>
+
+<h2>Painel Avançado de Cupons</h2>
+<label>Login:</label>
+<input type="text" id="login" placeholder="Usuário">
+<label>Senha:</label>
+<input type="password" id="senha" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+
+<div id="painel">
+<h3>Gerenciar Cupons</h3>
+
+<label>Nome do cupom:</label>
+<input type="text" id="novoCupom" placeholder="Ex: DESCONTO10">
+<label>Desconto (%):</label>
+<input type="number" id="valorCupom" placeholder="Ex: 10">
+<button onclick="criarCupom()">Criar Cupom</button>
+
+<h3>Cupons existentes</h3>
+<div id="listaCupons"></div>
+</div>
+
+<script>
+// Login avançado
+function login(){
+    let usuario = document.getElementById('login').value.trim();
+    let senha = document.getElementById('senha').value.trim();
+    if(usuario==='adminep' && senha==='1234'){
+        document.getElementById('painel').style.display='block';
+        atualizarLista();
+        alert('Login OK');
+    } else {
+        alert('Login ou senha incorretos');
+    }
+}
+
+// Criar cupom
+function criarCupom(){
+    let nome = document.getElementById('novoCupom').value.trim().toUpperCase();
+    let valor = parseFloat(document.getElementById('valorCupom').value);
+    if(!nome || isNaN(valor) || valor<=0){
+        alert('Preencha nome e valor válidos');
+        return;
+    }
+    let cupons = JSON.parse(localStorage.getItem('cupons')) || {};
+    cupons[nome] = {ativo:true,valor:valor};
+    localStorage.setItem('cupons', JSON.stringify(cupons));
+    atualizarLista();
+    alert('Cupom '+nome+' criado e ativado!');
+}
+
+// Ativar/desativar cupom
+function toggleCupom(nome){
+    let cupons = JSON.parse(localStorage.getItem('cupons')) || {};
+    cupons[nome].ativo = !cupons[nome].ativo;
+    localStorage.setItem('cupons', JSON.stringify(cupons));
+    atualizarLista();
+}
+
+// Atualiza lista visual
+function atualizarLista(){
+    let container = document.getElementById('listaCupons');
+    container.innerHTML='';
+    let cupons = JSON.parse(localStorage.getItem('cupons')) || {};
+    for(let nome in cupons){
+        let div = document.createElement('div');
+        div.className='cupom';
+        div.innerHTML=`
+            <b>${nome}</b> - Desconto: ${cupons[nome].valor}% - Status: ${cupons[nome].ativo?'Ativo':'Desativado'}
+            <button onclick="toggleCupom('${nome}')">${cupons[nome].ativo?'Desativar':'Ativar'}</button>
+        `;
+        container.appendChild(div);
+    }
+}
+</script>
+</body>
+</html>
