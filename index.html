@@ -12,10 +12,11 @@ h2{margin-top:20px;color:#d90429;}
 .ativa{opacity:1;transform:translateX(0);position:relative;}
 .produto{background:#fff;border:2px solid #d90429;margin:10px 0;border-radius:10px;padding:10px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
 .produto-info{margin-bottom:5px;}
-.produto-contador{display:flex;align-items:center;gap:5px;margin-top:5px;}
-.produto-contador button{background:#d90429;color:white;border:none;padding:4px 8px;border-radius:5px;font-weight:bold;font-size:14px;}
+.produto-contador{display:flex;align-items:center;gap:3px;margin-top:5px;}
+.produto-contador button{background:#d90429;color:white;border:none;padding:2px 6px;border-radius:5px;font-weight:bold;font-size:12px;}
+.produto-contador span{min-width:20px;text-align:center;display:inline-block;}
 select{width:100%;padding:5px;margin-top:5px;border:1px solid #ccc;border-radius:5px;font-size:14px;}
-button{background:#d90429;color:white;border:none;padding:10px;border-radius:6px;width:100%;margin-top:10px;font-weight:bold;}
+button{background:#d90429;color:white;border:none;padding:8px;border-radius:6px;width:100%;margin-top:10px;font-weight:bold;font-size:14px;}
 button.voltar{background:#aaa;}
 input{width:100%;padding:8px;margin-top:8px;border:1px solid #ccc;border-radius:5px;font-size:14px;}
 .total{text-align:right;font-weight:bold;margin-top:10px;font-size:16px;}
@@ -229,7 +230,7 @@ let pagamento=document.getElementById("pagamento").value;
 document.getElementById("campoTroco").style.display=(pagamento==="Dinheiro")?"block":"none";
 }
 
-// Pega endereço real completo via Nominatim OpenStreetMap
+// Localização real completa
 function pegarEndereco(){
 if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(function(pos){
@@ -239,12 +240,12 @@ fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=
 .then(res=>res.json())
 .then(data=>{
 if(data.address){
-let rua = data.address.road || data.address.pedestrian || "";
+let rua = data.address.road || data.address.pedestrian || data.address.footway || "";
 let numero = data.address.house_number || "";
-let bairro = data.address.suburb || data.address.village || "";
-let cidade = data.address.city || data.address.town || data.address.county || "";
+let bairro = data.address.suburb || data.address.neighbourhood || "";
+let cidade = data.address.city || data.address.town || data.address.village || "";
 let cep = data.address.postcode || "";
-document.getElementById("endereco").value = rua + ", " + numero;
+document.getElementById("endereco").value = rua + (numero?" ,"+numero:"");
 document.getElementById("bairro").value = bairro;
 document.getElementById("cidade").value = cidade;
 document.getElementById("cep").value = cep;
