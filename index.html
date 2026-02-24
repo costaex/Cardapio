@@ -4,23 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cardápio Digital</title>
-
 <style>
-body{margin:0;font-family:Arial, sans-serif;background:#ffffff;color:#333;overflow-x:hidden;}
+body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#333;overflow-x:hidden;}
 header{background:#d90429;color:white;padding:20px;text-align:center;font-size:22px;font-weight:bold;}
 .etapa{position:absolute;width:100%;top:80px;left:0;padding:15px;opacity:0;transform:translateX(100%);transition:0.4s ease;}
 .ativa{opacity:1;transform:translateX(0);position:relative;}
-.produto{background:#fff;border:2px solid #d90429;margin:10px 0;border-radius:10px;padding:10px;box-shadow:0 3px 8px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;}
-.produto-info{flex:1;}
-.produto-contador{display:flex;align-items:center;gap:5px;}
+.produto{background:#fff;border:2px solid #d90429;margin:10px 0;border-radius:10px;padding:10px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
+.produto-info{margin-bottom:8px;}
+.produto-contador{display:flex;align-items:center;gap:5px;margin-top:5px;}
 .produto-contador button{background:#d90429;color:white;border:none;padding:6px 12px;border-radius:6px;font-weight:bold;}
+select{width:100%;padding:6px;margin-top:5px;border:1px solid #ccc;border-radius:5px;}
 button{background:#d90429;color:white;border:none;padding:10px;border-radius:6px;width:100%;margin-top:10px;font-weight:bold;}
 button.voltar{background:#aaa;}
-input, select{width:100%;padding:8px;margin-top:8px;border:1px solid #ccc;border-radius:5px;}
-.total{font-weight:bold;margin-top:10px;text-align:right;}
+input{width:100%;padding:8px;margin-top:8px;border:1px solid #ccc;border-radius:5px;}
+.total{text-align:right;font-weight:bold;margin-top:10px;}
 </style>
 </head>
-
 <body>
 
 <header>🥟 Empadão do Alessandro</header>
@@ -28,169 +27,128 @@ input, select{width:100%;padding:8px;margin-top:8px;border:1px solid #ccc;border
 <!-- ETAPA 1 -->
 <div id="etapa1" class="etapa ativa">
 
-<!-- Produtos -->
 <div class="produto">
 <div class="produto-info">
 <h3>Empadão de Frango com Requeijão</h3>
 <p>R$ 20,00</p>
+<label>Milho:</label>
+<select id="milho_frango_requeijao">
+<option value="false">Sem Milho</option>
+<option value="true">Com Milho</option>
+</select>
 </div>
 <div class="produto-contador">
 <button onclick="alterar('frango_requeijao',20,-1)">-</button>
 <span id="qtd_frango_requeijao">0</span>
 <button onclick="alterar('frango_requeijao',20,1)">+</button>
 </div>
-<div class="produto-total">
 <p id="total_frango_requeijao">R$ 0,00</p>
-</div>
 </div>
 
 <div class="produto">
 <div class="produto-info">
 <h3>Empadão de Frango com Catupiry</h3>
 <p>R$ 22,00</p>
+<label>Milho:</label>
+<select id="milho_frango_catupiry">
+<option value="false">Sem Milho</option>
+<option value="true">Com Milho</option>
+</select>
 </div>
 <div class="produto-contador">
 <button onclick="alterar('frango_catupiry',22,-1)">-</button>
 <span id="qtd_frango_catupiry">0</span>
 <button onclick="alterar('frango_catupiry',22,1)">+</button>
 </div>
-<div class="produto-total">
 <p id="total_frango_catupiry">R$ 0,00</p>
-</div>
 </div>
 
 <div class="produto">
 <div class="produto-info">
-<h3>Empadão de Frango sem Catupiry e Requeijão</h3>
+<h3>Empadão de Frango Simples</h3>
 <p>R$ 18,00</p>
+<label>Milho:</label>
+<select id="milho_frango_simples">
+<option value="false">Sem Milho</option>
+<option value="true">Com Milho</option>
+</select>
 </div>
 <div class="produto-contador">
 <button onclick="alterar('frango_simples',18,-1)">-</button>
 <span id="qtd_frango_simples">0</span>
 <button onclick="alterar('frango_simples',18,1)">+</button>
 </div>
-<div class="produto-total">
 <p id="total_frango_simples">R$ 0,00</p>
-</div>
-</div>
-
-<!-- Milho -->
-<div class="produto">
-<div class="produto-info">
-<h3>Requeijão com Milho</h3>
-<p>R$ 23,00</p>
-</div>
-<div class="produto-contador">
-<button onclick="alterar('requeijao_milho',23,-1)">-</button>
-<span id="qtd_requeijao_milho">0</span>
-<button onclick="alterar('requeijao_milho',23,1)">+</button>
-</div>
-<div class="produto-total">
-<p id="total_requeijao_milho">R$ 0,00</p>
-</div>
-</div>
-
-<div class="produto">
-<div class="produto-info">
-<h3>Catupiry com Milho</h3>
-<p>R$ 25,00</p>
-</div>
-<div class="produto-contador">
-<button onclick="alterar('catupiry_milho',25,-1)">-</button>
-<span id="qtd_catupiry_milho">0</span>
-<button onclick="alterar('catupiry_milho',25,1)">+</button>
-</div>
-<div class="produto-total">
-<p id="total_catupiry_milho">R$ 0,00</p>
-</div>
 </div>
 
 <div class="total">
 Subtotal: R$ <span id="subtotal1">0.00</span>
 </div>
-
 <button onclick="irPara(2)">Continuar</button>
 </div>
 
-<!-- ETAPA 2 - Dados do cliente -->
+<!-- ETAPA 2 - Dados -->
 <div id="etapa2" class="etapa">
-
 <label>Nome:</label>
 <input type="text" id="nome">
-
 <label>Telefone:</label>
 <input type="text" id="telefone">
-
 <label>Endereço:</label>
 <input type="text" id="endereco">
 <button onclick="pegarLocalizacao()">📍 Usar localização atual</button>
-
 <label>Bairro:</label>
 <input type="text" id="bairro">
-
 <label>Observação:</label>
 <input type="text" id="obs">
-
 <button class="voltar" onclick="irPara(1)">Voltar</button>
 <button onclick="irPara(3)">Continuar</button>
-
 </div>
 
 <!-- ETAPA 3 - Pagamento -->
 <div id="etapa3" class="etapa">
-
 <label>Cupom:</label>
 <input type="text" id="cupom">
 <button onclick="aplicarCupom()">Aplicar Cupom</button>
-
 <div class="total">
 Subtotal: R$ <span id="subtotal">0.00</span><br>
 Desconto: R$ <span id="desconto">0.00</span><br>
 Total: R$ <span id="total">0.00</span>
 </div>
-
 <label>Forma de pagamento:</label>
 <select id="pagamento" onchange="verificarPagamento()">
 <option>Pix</option>
 <option>Cartão</option>
 <option>Dinheiro</option>
 </select>
-
 <div id="campoTroco" style="display:none;">
 <label>Troco para:</label>
 <input type="text" id="troco">
 </div>
-
 <button class="voltar" onclick="irPara(2)">Voltar</button>
 <button onclick="finalizar()">Enviar Pedido</button>
-
 </div>
 
 <script>
 // Carrinho
 let carrinho={
-frango_requeijao:{nome:"Empadão de Frango com Requeijão",preco:20,qtd:0},
-frango_catupiry:{nome:"Empadão de Frango com Catupiry",preco:22,qtd:0},
-frango_simples:{nome:"Empadão de Frango sem Catupiry e Requeijão",preco:18,qtd:0},
-requeijao_milho:{nome:"Requeijão com Milho",preco:23,qtd:0},
-catupiry_milho:{nome:"Catupiry com Milho",preco:25,qtd:0}
+frango_requeijao:{nome:"Empadão de Frango com Requeijão",preco:20,qtd:0,milho:false},
+frango_catupiry:{nome:"Empadão de Frango com Catupiry",preco:22,qtd:0,milho:false},
+frango_simples:{nome:"Empadão de Frango Simples",preco:18,qtd:0,milho:false}
 };
 let desconto=0;
 
-// Funções
 function alterar(id,preco,valor){
 carrinho[id].qtd+=valor;
 if(carrinho[id].qtd<0)carrinho[id].qtd=0;
+carrinho[id].milho=document.getElementById("milho_"+id).value==="true";
 document.getElementById("qtd_"+id).innerText=carrinho[id].qtd;
-document.getElementById("total_"+id).innerText="R$ "+(carrinho[id].qtd*carrinho[id].preco).toFixed(2);
+document.getElementById("total_"+id).innerText="R$ "+(carrinho[id].qtd*preco).toFixed(2);
 atualizar();
 }
 
 function calcularSubtotal(){
 let soma=0;
-for(let item in carrinho){
-soma+=carrinho[item].qtd*carrinho[item].preco;
-}
+for(let item in carrinho){soma+=carrinho[item].qtd*carrinho[item].preco;}
 return soma;
 }
 
@@ -205,12 +163,7 @@ document.getElementById("total").innerText=(subtotal-desconto).toFixed(2);
 function aplicarCupom(){
 let cupom=document.getElementById("cupom").value;
 let subtotal=calcularSubtotal();
-if(cupom==="DESCONTO10"){
-desconto=subtotal*0.10;
-}else{
-desconto=0;
-alert("Cupom inválido");
-}
+if(cupom==="DESCONTO10"){desconto=subtotal*0.10;}else{desconto=0;alert("Cupom inválido");}
 atualizar();
 }
 
@@ -230,14 +183,10 @@ if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(function(pos){
 let lat=pos.coords.latitude;
 let lng=pos.coords.longitude;
-document.getElementById("endereco").value="https://www.google.com/maps/search/?api=1&query="+lat+","+lng;
-alert("Localização preenchida automaticamente!");
-},function(err){
-alert("Não foi possível obter a localização.");
-});
-}else{
-alert("Seu dispositivo não suporta GPS.");
-}
+document.getElementById("endereco").value=`Rua Exemplo, ${Math.floor(Math.random()*100+1)}, GPS: ${lat.toFixed(5)},${lng.toFixed(5)}`;
+alert("Endereço preenchido automaticamente!");
+},function(err){alert("Não foi possível obter a localização.");});
+}else{alert("Seu dispositivo não suporta GPS.");}
 }
 
 function finalizar(){
@@ -252,7 +201,8 @@ mensagem+="Obs: "+obs.value+"%0A%0A";
 mensagem+="*Itens:*%0A";
 for(let item in carrinho){
 if(carrinho[item].qtd>0){
-mensagem+=carrinho[item].nome+" x"+carrinho[item].qtd+" = R$ "+(carrinho[item].qtd*carrinho[item].preco).toFixed(2)+"%0A";
+let milho=carrinho[item].milho?" (com milho)":" (sem milho)";
+mensagem+=carrinho[item].nome+milho+" x"+carrinho[item].qtd+" = R$ "+(carrinho[item].qtd*carrinho[item].preco).toFixed(2)+"%0A";
 }
 }
 mensagem+="%0ATotal: R$ "+totalFinal+"%0A";
