@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardápio Digital Compacto</title>
+<title>Cantinho do Empadão</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#333;overflow-x:hidden;}
-header{background:#d90429;color:white;padding:15px;text-align:center;font-size:20px;font-weight:bold;}
-h2{margin-top:15px;color:#d90429;}
+header{background:#d90429;color:white;padding:15px;text-align:center;font-size:20px;font-weight:bold;display:flex;align-items:center;justify-content:center;}
+header img{height:40px;margin-right:10px;vertical-align:middle;border-radius:5px;}
+h2{margin-top:15px;color:#fff;background:#d90429;padding:5px;border-radius:5px;}
 .etapa{position:absolute;width:100%;top:70px;left:0;padding:10px;opacity:0;transform:translateX(100%);transition:0.4s ease;}
 .ativa{opacity:1;transform:translateX(0);position:relative;}
 .produto{background:#fff;border:2px solid #d90429;margin:5px 0;border-radius:10px;padding:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
@@ -24,7 +25,10 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 </head>
 <body>
 
-<header>🥟 Empadão do Alessandro</header>
+<header>
+  <img src="Logoep.jpg" alt="Logo">
+  🥟 Cantinho do Empadão
+</header>
 
 <!-- ETAPA 1 - Cardápio -->
 <div id="etapa1" class="etapa ativa">
@@ -132,7 +136,7 @@ Subtotal: R$ <span id="subtotal1">0.00</span>
 <button onclick="irPara(2)">Continuar</button>
 </div>
 
-<!-- ETAPA 2 - Dados -->
+<!-- ETAPA 2 - Dados do cliente -->
 <div id="etapa2" class="etapa">
 <label>Nome:</label>
 <input type="text" id="nome">
