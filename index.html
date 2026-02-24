@@ -10,11 +10,12 @@ header{background:#d90429;color:white;padding:15px;text-align:center;display:fle
 header img{height:150px;border-radius:10px;margin-top:10px;}
 header h1{margin:0;color:white;}
 h2{margin-top:15px;color:#fff;background:#d90429;padding:5px;border-radius:5px;}
+.step{display:none;}
 .produto{background:#fff;border:2px solid #d90429;margin:5px 0;border-radius:10px;padding:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
 .produto-info{margin-bottom:5px;font-size:13px;}
 .produto-contador{display:flex;align-items:center;gap:2px;margin-top:3px;}
 .produto-contador button{
-    background:#d90429;color:white;border:none;padding:1px 2px;border-radius:4px;font-weight:bold;font-size:8px;width:20px;
+    background:#d90429;color:white;border:none;padding:1px 2px;border-radius:4px;font-weight:bold;font-size:10px;width:16px;
 }
 .produto-contador span{min-width:16px;text-align:center;display:inline-block;font-size:10px;}
 select{width:100%;padding:3px;margin-top:3px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
@@ -38,14 +39,15 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 <div id="horarios"></div>
 </div>
 
-<div id="menu" style="display:none;">
+<!-- Etapa 1: Pedido -->
+<div id="step1" class="step">
+<h2>Escolha seus produtos</h2>
 
-<h2>Empadões</h2>
+<h3>Empadões</h3>
 
 <div class="produto">
   <div class="produto-info">
-    <h3>Empadão de Frango com Requeijão</h3>
-    <p>R$ 20,00</p>
+    <h4>Empadão de Frango com Requeijão - R$20,00</h4>
     <label>Milho:</label>
     <select id="milho_frango_requeijao">
       <option value="false">Sem Milho</option>
@@ -62,8 +64,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <div class="produto">
   <div class="produto-info">
-    <h3>Empadão de Frango com Catupiry</h3>
-    <p>R$ 22,00</p>
+    <h4>Empadão de Frango com Catupiry - R$22,00</h4>
     <label>Milho:</label>
     <select id="milho_frango_catupiry">
       <option value="false">Sem Milho</option>
@@ -80,8 +81,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <div class="produto">
   <div class="produto-info">
-    <h3>Empadão de Frango sem Requeijão e sem Catupiry</h3>
-    <p>R$ 18,00</p>
+    <h4>Empadão de Frango simples - R$18,00</h4>
     <label>Milho:</label>
     <select id="milho_frango_simples">
       <option value="false">Sem Milho</option>
@@ -96,12 +96,11 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
   <p id="total_frango_simples">R$ 0,00</p>
 </div>
 
-<h2>Bebidas</h2>
+<h3>Bebidas</h3>
 
 <div class="produto">
   <div class="produto-info">
-    <h3>Guaracrack</h3>
-    <p>R$ 7,00</p>
+    <h4>Guaracrack - R$7,00</h4>
   </div>
   <div class="produto-contador">
     <button onclick="alterar('guaracrack',7,-1)">-</button>
@@ -113,8 +112,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <div class="produto">
   <div class="produto-info">
-    <h3>Coca-Cola Lata 550ml</h3>
-    <p>R$ 6,00</p>
+    <h4>Coca-Cola Lata 550ml - R$6,00</h4>
   </div>
   <div class="produto-contador">
     <button onclick="alterar('coca550',6,-1)">-</button>
@@ -126,8 +124,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <div class="produto">
   <div class="produto-info">
-    <h3>Guaraná Lata 550ml</h3>
-    <p>R$ 6,00</p>
+    <h4>Guaraná Lata 550ml - R$6,00</h4>
   </div>
   <div class="produto-contador">
     <button onclick="alterar('guarana550',6,-1)">-</button>
@@ -137,105 +134,106 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
   <p id="total_guarana550">R$ 0,00</p>
 </div>
 
-<button onclick="enviarWhatsApp()">📩 Enviar pedido pelo WhatsApp</button>
+<button onclick="proximaEtapa(2)">➡ Continuar</button>
+</div>
 
+<!-- Etapa 2: Dados do cliente -->
+<div id="step2" class="step">
+<h2>Informações de entrega</h2>
+<input type="text" id="nome" placeholder="Nome completo">
+<input type="text" id="telefone" placeholder="Telefone">
+<input type="text" id="endereco" placeholder="Endereço completo (rua, número, bairro)">
+<button class="voltar" onclick="proximaEtapa(1)">⬅ Voltar</button>
+<button onclick="proximaEtapa(3)">➡ Continuar</button>
+</div>
+
+<!-- Etapa 3: Forma de pagamento -->
+<div id="step3" class="step">
+<h2>Pagamento</h2>
+<select id="pagamento" onchange="verTroco()">
+  <option value="dinheiro">Dinheiro</option>
+  <option value="cartao">Cartão</option>
+</select>
+<input type="number" id="troco" placeholder="Troco para quanto?" style="display:none">
+<button class="voltar" onclick="proximaEtapa(2)">⬅ Voltar</button>
+<button onclick="enviarWhatsApp()">📩 Enviar pedido pelo WhatsApp</button>
 </div>
 
 <script>
-// Horários de funcionamento
+// Horários
 const horarios = {
-    "0": ["17:00","23:00"],  // Domingo
-    "1": null,                // Segunda-feira Fechada
-    "2": ["17:00","23:00"],  // Terça
-    "3": ["19:00","23:30"],  // Quarta
-    "4": ["19:00","23:30"],  // Quinta
-    "5": ["19:00","23:30"],  // Sexta
-    "6": ["17:00","23:00"]   // Sábado
+    "0":["17:00","23:00"],"1":null,"2":["17:00","23:00"],"3":["19:00","23:30"],"4":["19:00","23:30"],"5":["19:00","23:30"],"6":["17:00","23:00"]
 };
+const horariosTexto = ["Domingo: 17:00 - 23:00","Segunda-feira: Fechada","Terça-feira: 17:00 - 23:00","Quarta-feira: 19:00 - 23:30","Quinta-feira: 19:00 - 23:30","Sexta-feira: 19:00 - 23:30","Sábado: 17:00 - 23:00"];
 
-const horariosTexto = [
-  "Domingo: 17:00 - 23:00",
-  "Segunda-feira: Fechada",
-  "Terça-feira: 17:00 - 23:00",
-  "Quarta-feira: 19:00 - 23:30",
-  "Quinta-feira: 19:00 - 23:30",
-  "Sexta-feira: 19:00 - 23:30",
-  "Sábado: 17:00 - 23:00"
-];
-
-// Senha de administrador para acessar fora do horário
-const senhaAdm = "1234";
+// Acesso admin
+const acessoAdm = new URLSearchParams(window.location.search).get('adm')==='1234';
 
 function pad(n){ return n<10 ? '0'+n : n; }
 
 function conferirHorario(){
-    let agora = new Date();
-    let dia = agora.getDay();
-    let hora = agora.getHours();
-    let min = agora.getMinutes();
-    let horarioAtual = parseFloat(pad(hora)+'.'+pad(min));
-    
-    let abertura = horarios[dia] ? parseFloat(horarios[dia][0].replace(':','.')) : null;
-    let fechamento = horarios[dia] ? parseFloat(horarios[dia][1].replace(':','.')) : null;
-
-    let acessoAdm = false;
-
-    if(abertura === null || horarioAtual < abertura || horarioAtual > fechamento){
-        let resposta = prompt("Horário fechado. Se você é administrador, digite a senha:");
-        if(resposta === senhaAdm){
-            acessoAdm = true;
-        }
-    }
-
-    if((abertura && horarioAtual >= abertura && horarioAtual <= fechamento) || acessoAdm){
-        document.getElementById('menu').style.display='block';
+    const agora = new Date();
+    const dia = agora.getDay();
+    const hora = agora.getHours();
+    const min = agora.getMinutes();
+    const horarioAtual = parseFloat(pad(hora)+'.'+pad(min));
+    const abertura = horarios[dia]?parseFloat(horarios[dia][0].replace(':','.')):null;
+    const fechamento = horarios[dia]?parseFloat(horarios[dia][1].replace(':','.')):null;
+    if((abertura && horarioAtual>=abertura && horarioAtual<=fechamento) || acessoAdm){
+        document.getElementById('step1').style.display='block';
     } else {
         document.getElementById('fechado').style.display='block';
-        mostrarHorarios();
+        document.getElementById('horarios').innerHTML=horariosTexto.join('<br>');
     }
 }
 
-function mostrarHorarios(){
-    const divHorarios = document.getElementById('horarios');
-    divHorarios.innerHTML = horariosTexto.join('<br>');
+// Etapas
+function proximaEtapa(n){
+    document.querySelectorAll('.step').forEach(s=>s.style.display='none');
+    document.getElementById('step'+n).style.display='block';
 }
 
-// Contadores de produtos
+// Contadores
 function alterar(id,preco,quant){
-    let qtdElem = document.getElementById("qtd_"+id);
-    let totalElem = document.getElementById("total_"+id);
-    let qtd = parseInt(qtdElem.innerText)+quant;
+    const qtdElem=document.getElementById("qtd_"+id);
+    const totalElem=document.getElementById("total_"+id);
+    let qtd=parseInt(qtdElem.innerText)+quant;
     if(qtd<0) qtd=0;
-    qtdElem.innerText = qtd;
-    totalElem.innerText = "R$ "+(qtd*preco).toFixed(2);
+    qtdElem.innerText=qtd;
+    totalElem.innerText="R$ "+(qtd*preco).toFixed(2);
+}
+
+// Troco
+function verTroco(){
+    const tp=document.getElementById('pagamento').value;
+    document.getElementById('troco').style.display=(tp==='dinheiro')?'block':'none';
 }
 
 // WhatsApp
 function enviarWhatsApp(){
-    let numero = "5521969592922";
-    let mensagem = "Olá, quero fazer um pedido:\n";
-
-    const produtos = ["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
-    produtos.forEach(function(p){
-        let qtd = parseInt(document.getElementById("qtd_"+p).innerText);
+    const numero="5521969592922";
+    let msg="Olá, quero fazer um pedido:\n";
+    const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
+    produtos.forEach(p=>{
+        const qtd=parseInt(document.getElementById("qtd_"+p).innerText);
         if(qtd>0){
-            let milho = document.getElementById("milho_"+p)? (document.getElementById("milho_"+p).value==="true"?" com milho":" sem milho"):"";
-            let nomeFinal = p=="frango_requeijao"?"Empadão de Frango com Requeijão":
-                            p=="frango_catupiry"?"Empadão de Frango com Catupiry":
-                            p=="frango_simples"?"Empadão de Frango simples":p;
-            mensagem += "- "+nomeFinal+milho+" x "+qtd+"\n";
+            const milho=document.getElementById("milho_"+p)? (document.getElementById("milho_"+p).value==="true"?" com milho":" sem milho"):"";
+            const nomeFinal=p=="frango_requeijao"?"Empadão de Frango com Requeijão":p=="frango_catupiry"?"Empadão de Frango com Catupiry":p=="frango_simples"?"Empadão de Frango simples":p;
+            msg+="- "+nomeFinal+milho+" x "+qtd+"\n";
         }
     });
-
-    let endereco = prompt("Digite seu endereço completo (nome, rua, número, bairro):");
-    if(endereco) mensagem += "Endereço: " + endereco + "\n";
-
-    let url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensagem);
+    const nome=document.getElementById('nome').value;
+    const telefone=document.getElementById('telefone').value;
+    const endereco=document.getElementById('endereco').value;
+    const pagamento=document.getElementById('pagamento').value;
+    const troco=document.getElementById('troco').value;
+    msg+="\nNome: "+nome+"\nTelefone: "+telefone+"\nEndereço: "+endereco+"\nPagamento: "+pagamento;
+    if(troco && pagamento==='dinheiro') msg+="\nTroco para: R$ "+troco;
+    const url="https://wa.me/"+numero+"?text="+encodeURIComponent(msg);
     window.open(url,"_blank");
 }
 
-window.onload = conferirHorario;
+window.onload=conferirHorario;
 </script>
-
 </body>
 </html>
