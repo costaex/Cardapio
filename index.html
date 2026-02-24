@@ -30,6 +30,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 #horarios{margin-top:10px;text-align:center;font-size:14px;}
 #mensagemFinal{display:none;text-align:center;margin-top:20px;font-size:18px;color:green;}
 #pixInfo{display:none;text-align:center;margin-top:5px;font-size:14px;color:#d90429;background:#ffeaea;padding:5px;border-radius:5px;}
+#resumoPedido{margin-top:10px;margin-bottom:10px;border:1px solid #d90429;padding:8px;border-radius:5px;background:#ffeaea;font-size:14px;}
 </style>
 </head>
 <body>
@@ -155,6 +156,9 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <!-- Etapa 3: Pagamento -->
 <div id="step3" class="step">
+<h2>Resumo do pedido</h2>
+<div id="resumoPedido"></div>
+
 <h2>Pagamento</h2>
 <select id="pagamento" onchange="verTroco()">
   <option value="dinheiro">Dinheiro</option>
@@ -166,6 +170,7 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 <b>Chave Pix:</b> 48092363000120<br>
 <b>Titular:</b> Cantinho do Empadão Ltda
 </div>
+
 <p class="total" id="totalEtapa3">Total: R$ 0,00</p>
 <button class="voltar" onclick="proximaEtapa(2)">⬅ Voltar</button>
 <button onclick="confirmarPedido()">✅ Confirmar Pedido</button>
@@ -206,6 +211,7 @@ function conferirHorario(){
 function proximaEtapa(n){
     document.querySelectorAll('.step').forEach(s=>s.style.display='none');
     document.getElementById('step'+n).style.display='block';
+    atualizarResumo();
     atualizarTotalEtapa3();
 }
 
@@ -229,12 +235,28 @@ function atualizarTotal(){
         total+=preco;
     });
     document.getElementById('totalPedido').innerText="Total: R$ "+total.toFixed(2);
+    atualizarResumo();
     atualizarTotalEtapa3();
 }
 
 function atualizarTotalEtapa3(){
     const total=document.getElementById('totalPedido').innerText.replace('Total: ','');
     document.getElementById('totalEtapa3').innerText="Total: "+total;
+}
+
+// Resumo do pedido
+function atualizarResumo(){
+    const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
+    let resumo="";
+    produtos.forEach(p=>{
+        const qtd=parseInt(document.getElementById("qtd_"+p).innerText);
+        if(qtd>0){
+            const milho=document.getElementById("milho_"+p)? (document.getElementById("milho_"+p).value==="true"?" com milho":" sem milho"):"";
+            const nomeFinal=p=="frango_requeijao"?"Empadão de Frango com Requeijão":p=="frango_catupiry"?"Empadão de Frango com Catupiry":p=="frango_simples"?"Empadão de Frango simples":p;
+            resumo+="- "+nomeFinal+milho+" x "+qtd+"<br>";
+        }
+    });
+    document.getElementById('resumoPedido').innerHTML=resumo || "Nenhum item selecionado.";
 }
 
 // Troco e Pix
