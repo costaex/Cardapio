@@ -60,10 +60,83 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
   <p id="total_frango_requeijao">R$ 0,00</p>
 </div>
 
-<!-- Repita os produtos restantes (empadões + bebidas) como antes -->
+<div class="produto">
+  <div class="produto-info">
+    <h3>Empadão de Frango com Catupiry</h3>
+    <p>R$ 22,00</p>
+    <label>Milho:</label>
+    <select id="milho_frango_catupiry">
+      <option value="false">Sem Milho</option>
+      <option value="true">Com Milho</option>
+    </select>
+  </div>
+  <div class="produto-contador">
+    <button onclick="alterar('frango_catupiry',22,-1)">-</button>
+    <span id="qtd_frango_catupiry">0</span>
+    <button onclick="alterar('frango_catupiry',22,1)">+</button>
+  </div>
+  <p id="total_frango_catupiry">R$ 0,00</p>
+</div>
 
-<input type="text" id="cupom" placeholder="Digite seu cupom de desconto">
-<button onclick="aplicarCupom()">Aplicar Cupom</button>
+<div class="produto">
+  <div class="produto-info">
+    <h3>Empadão de Frango sem Requeijão e sem Catupiry</h3>
+    <p>R$ 18,00</p>
+    <label>Milho:</label>
+    <select id="milho_frango_simples">
+      <option value="false">Sem Milho</option>
+      <option value="true">Com Milho</option>
+    </select>
+  </div>
+  <div class="produto-contador">
+    <button onclick="alterar('frango_simples',18,-1)">-</button>
+    <span id="qtd_frango_simples">0</span>
+    <button onclick="alterar('frango_simples',18,1)">+</button>
+  </div>
+  <p id="total_frango_simples">R$ 0,00</p>
+</div>
+
+<h2>Bebidas</h2>
+
+<div class="produto">
+  <div class="produto-info">
+    <h3>Guaracrack</h3>
+    <p>R$ 7,00</p>
+  </div>
+  <div class="produto-contador">
+    <button onclick="alterar('guaracrack',7,-1)">-</button>
+    <span id="qtd_guaracrack">0</span>
+    <button onclick="alterar('guaracrack',7,1)">+</button>
+  </div>
+  <p id="total_guaracrack">R$ 0,00</p>
+</div>
+
+<div class="produto">
+  <div class="produto-info">
+    <h3>Coca-Cola Lata 550ml</h3>
+    <p>R$ 6,00</p>
+  </div>
+  <div class="produto-contador">
+    <button onclick="alterar('coca550',6,-1)">-</button>
+    <span id="qtd_coca550">0</span>
+    <button onclick="alterar('coca550',6,1)">+</button>
+  </div>
+  <p id="total_coca550">R$ 0,00</p>
+</div>
+
+<div class="produto">
+  <div class="produto-info">
+    <h3>Guaraná Lata 550ml</h3>
+    <p>R$ 6,00</p>
+  </div>
+  <div class="produto-contador">
+    <button onclick="alterar('guarana550',6,-1)">-</button>
+    <span id="qtd_guarana550">0</span>
+    <button onclick="alterar('guarana550',6,1)">+</button>
+  </div>
+  <p id="total_guarana550">R$ 0,00</p>
+</div>
+
 <button onclick="enviarWhatsApp()">📩 Enviar pedido pelo WhatsApp</button>
 
 </div>
@@ -90,6 +163,9 @@ const horariosTexto = [
   "Sábado: 17:00 - 23:00"
 ];
 
+// Senha de administrador para acessar fora do horário
+const senhaAdm = "1234";
+
 function pad(n){ return n<10 ? '0'+n : n; }
 
 function conferirHorario(){
@@ -102,13 +178,17 @@ function conferirHorario(){
     let abertura = horarios[dia] ? parseFloat(horarios[dia][0].replace(':','.')) : null;
     let fechamento = horarios[dia] ? parseFloat(horarios[dia][1].replace(':','.')) : null;
 
-    if(abertura && fechamento){
-        if(horarioAtual >= abertura && horarioAtual <= fechamento){
-            document.getElementById('menu').style.display='block';
-        } else {
-            document.getElementById('fechado').style.display='block';
-            mostrarHorarios();
+    let acessoAdm = false;
+
+    if(abertura === null || horarioAtual < abertura || horarioAtual > fechamento){
+        let resposta = prompt("Horário fechado. Se você é administrador, digite a senha:");
+        if(resposta === senhaAdm){
+            acessoAdm = true;
         }
+    }
+
+    if((abertura && horarioAtual >= abertura && horarioAtual <= fechamento) || acessoAdm){
+        document.getElementById('menu').style.display='block';
     } else {
         document.getElementById('fechado').style.display='block';
         mostrarHorarios();
@@ -128,17 +208,6 @@ function alterar(id,preco,quant){
     if(qtd<0) qtd=0;
     qtdElem.innerText = qtd;
     totalElem.innerText = "R$ "+(qtd*preco).toFixed(2);
-}
-
-// Cupom de desconto
-function aplicarCupom(){
-    let cupom = document.getElementById("cupom").value.trim().toUpperCase();
-    let cupons = JSON.parse(localStorage.getItem('cupons')) || {};
-    if(cupons[cupom] && cupons[cupom].ativo){
-        alert("Cupom aplicado: "+cupons[cupom].valor+"% de desconto!");
-    } else {
-        alert("Cupom inválido ou desativado!");
-    }
 }
 
 // WhatsApp
@@ -165,7 +234,6 @@ function enviarWhatsApp(){
     window.open(url,"_blank");
 }
 
-// Chama função ao carregar a página
 window.onload = conferirHorario;
 </script>
 
