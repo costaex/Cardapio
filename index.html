@@ -161,8 +161,9 @@ input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:
 
 <h2>Pagamento</h2>
 <select id="pagamento" onchange="verTroco()">
+  <option value="debito">Débito</option>
+  <option value="credito">Crédito</option>
   <option value="dinheiro">Dinheiro</option>
-  <option value="cartao">Cartão</option>
   <option value="pix">Pix</option>
 </select>
 <input type="number" id="troco" placeholder="Troco para quanto?" style="display:none">
