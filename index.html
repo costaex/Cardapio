@@ -3,230 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cantinho do Empadão</title>
+<title>Empadaria</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#fff5f5;}
-header{background:#c40000;color:white;text-align:center;padding:20px;}
-.logo{width:200px;display:block;margin:20px auto;}
-.container{padding:15px;}
-h2{color:#c40000;}
-.card{background:white;padding:15px;margin-bottom:15px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.08);}
-.tabs button{margin-right:5px;margin-bottom:10px;}
-.qty-control{display:flex;align-items:center;gap:8px;margin-top:10px;}
-.qty-btn{width:28px;height:28px;font-size:15px;padding:0;}
-.step{display:none;}
-.active{display:block;}
-.total{font-size:18px;font-weight:bold;margin-top:15px;}
-button{background:#c40000;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;}
-button:hover{opacity:0.9;}
-input, select{width:100%;padding:8px;margin-bottom:10px;border-radius:8px;border:1px solid #ccc;}
-.pix-box{background:#fff3cd;padding:10px;border-radius:8px;margin-top:10px;font-size:14px;}
-.hidden{display:none;}
-.price{color:#c40000;font-weight:bold;}
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:0;
+}
+header{
+    background:#d60000;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+.container{
+    padding:15px;
+}
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+.card h3{
+    margin:0;
+}
+.price{
+    color:#d60000;
+    font-weight:bold;
+    margin-top:5px;
+}
+.qty{
+    display:flex;
+    align-items:center;
+    margin-top:10px;
+}
+.qty button{
+    background:#d60000;
+    color:white;
+    border:none;
+    width:30px;
+    height:30px;
+    border-radius:5px;
+    font-size:18px;
+}
+.qty span{
+    margin:0 10px;
+}
+input, select{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+button.finalizar{
+    background:#d60000;
+    color:white;
+    border:none;
+    padding:15px;
+    width:100%;
+    border-radius:8px;
+    font-size:16px;
+    margin-top:15px;
+}
 </style>
 </head>
+
 <body>
 
-<header>
-<h1>Cantinho do Empadão</h1>
-<img src="Logoep.jpg" class="logo">
-</header>
+<header>🔥 Combos - R$ 23,99</header>
 
 <div class="container">
 
-<div class="step active" id="step1">
-
-<div class="tabs">
-<button onclick="showTab('empadoes')">Empadões</button>
-<button onclick="showTab('combos')">Combos</button>
-<button onclick="showTab('bebidas')">Bebidas</button>
-</div>
-
-<!-- EMPADÕES -->
-<div id="empadoes">
-
-<h2>🥧 Empadões</h2>
+<h2>🥧 Empadões - R$ 18,99</h2>
 
 <div class="card">
 <h3>Frango com Catupiry</h3>
-<p>Massa amanteigada premium, frango cremoso com catupiry.</p>
+<p>Massa amanteigada feita com Qualy e trigo premium. Recheio cremoso de frango desfiado com catupiry e cheiro-verde.</p>
 <p class="price">R$ 18,99</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('catupiry',18.99,-1)">-</button>
-<span id="qtd-catupiry">0</span>
-<button class="qty-btn" onclick="changeQty('catupiry',18.99,1)">+</button>
+<div class="qty">
+<button onclick="alterar('catupiry',-1)">-</button>
+<span id="catupiry">0</span>
+<button onclick="alterar('catupiry',1)">+</button>
 </div>
 </div>
 
 <div class="card">
 <h3>Frango com Requeijão</h3>
-<p>Massa amanteigada premium, frango cremoso com requeijão.</p>
+<p>Massa amanteigada feita com Qualy e trigo premium. Recheio cremoso de frango desfiado com requeijão crioulo e cheiro-verde.</p>
 <p class="price">R$ 18,99</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('requeijao',18.99,-1)">-</button>
-<span id="qtd-requeijao">0</span>
-<button class="qty-btn" onclick="changeQty('requeijao',18.99,1)">+</button>
+<div class="qty">
+<button onclick="alterar('requeijao',-1)">-</button>
+<span id="requeijao">0</span>
+<button onclick="alterar('requeijao',1)">+</button>
 </div>
 </div>
 
-<div class="card">
-<h3>Frango + Guaracrack</h3>
-<p>Empadão tradicional + Guaracrack</p>
-<p class="price">R$ 18,99</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('comboGuara',18.99,-1)">-</button>
-<span id="qtd-comboGuara">0</span>
-<button class="qty-btn" onclick="changeQty('comboGuara',18.99,1)">+</button>
-</div>
-</div>
-
-</div>
-
-<!-- COMBOS -->
-<div id="combos" class="hidden">
-
-<h2>🔥 Combos</h2>
+<header>🔥 Combos - R$ 23,99</header>
 
 <div class="card">
 <h3>Combo Catupiry + Coca</h3>
-<p>Empadão de frango com catupiry + Coca-Cola lata</p>
+<p>Empadão frango com catupiry + Coca-Cola lata</p>
 <p class="price">R$ 23,99</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('comboCatCoca',23.99,-1)">-</button>
-<span id="qtd-comboCatCoca">0</span>
-<button class="qty-btn" onclick="changeQty('comboCatCoca',23.99,1)">+</button>
+<div class="qty">
+<button onclick="alterar('combo1',-1)">-</button>
+<span id="combo1">0</span>
+<button onclick="alterar('combo1',1)">+</button>
 </div>
 </div>
 
 <div class="card">
-<h3>Combo Requeijão + Coca</h3>
-<p>Empadão de frango com requeijão + Coca-Cola lata</p>
+<h3>Combo Requeijão + Guaraná</h3>
+<p>Empadão frango com requeijão + Guaraná lata</p>
 <p class="price">R$ 23,99</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('comboReqCoca',23.99,-1)">-</button>
-<span id="qtd-comboReqCoca">0</span>
-<button class="qty-btn" onclick="changeQty('comboReqCoca',23.99,1)">+</button>
+<div class="qty">
+<button onclick="alterar('combo2',-1)">-</button>
+<span id="combo2">0</span>
+<button onclick="alterar('combo2',1)">+</button>
 </div>
 </div>
-
-</div>
-
-<!-- BEBIDAS -->
-<div id="bebidas" class="hidden">
 
 <h2>🥤 Bebidas</h2>
 
 <div class="card">
-<h3>Coca-Cola Lata</h3>
+<h3>Coca-Cola lata</h3>
 <p class="price">R$ 5,00</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('coca',5,-1)">-</button>
-<span id="qtd-coca">0</span>
-<button class="qty-btn" onclick="changeQty('coca',5,1)">+</button>
+<div class="qty">
+<button onclick="alterar('coca',-1)">-</button>
+<span id="coca">0</span>
+<button onclick="alterar('coca',1)">+</button>
 </div>
 </div>
 
 <div class="card">
-<h3>Guaraná Lata</h3>
+<h3>Guaraná lata</h3>
 <p class="price">R$ 5,00</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('guarana',5,-1)">-</button>
-<span id="qtd-guarana">0</span>
-<button class="qty-btn" onclick="changeQty('guarana',5,1)">+</button>
+<div class="qty">
+<button onclick="alterar('guarana',-1)">-</button>
+<span id="guarana">0</span>
+<button onclick="alterar('guarana',1)">+</button>
 </div>
 </div>
 
 <div class="card">
 <h3>Guaracrack</h3>
 <p class="price">R$ 2,00</p>
-<div class="qty-control">
-<button class="qty-btn" onclick="changeQty('guaracrack',2,-1)">-</button>
-<span id="qtd-guaracrack">0</span>
-<button class="qty-btn" onclick="changeQty('guaracrack',2,1)">+</button>
+<div class="qty">
+<button onclick="alterar('guaracrack',-1)">-</button>
+<span id="guaracrack">0</span>
+<button onclick="alterar('guaracrack',1)">+</button>
 </div>
 </div>
 
-</div>
+<h2>📋 Dados para entrega</h2>
 
-<div class="total">Subtotal: R$ <span id="subtotal">0.00</span></div>
-<div class="total">Taxa: R$ <span id="taxa">0.00</span></div>
-<div class="total">Total: R$ <span id="total">0.00</span></div>
-
-<br>
-<button onclick="nextStep(2)">Continuar</button>
-
-</div>
-
-<!-- DADOS -->
-<div class="step" id="step2">
-<h2>📍 Seus Dados</h2>
-<input type="text" id="nome" placeholder="Nome completo">
-<input type="text" id="endereco" placeholder="Rua">
-<input type="text" id="numero" placeholder="Número">
-<input type="text" id="bairro" placeholder="Bairro" oninput="calcularTaxa()">
+<input type="text" id="nome" placeholder="Seu nome">
+<input type="text" id="endereco" placeholder="Endereço">
+<input type="text" id="bairro" placeholder="Bairro">
 <input type="text" id="referencia" placeholder="Ponto de referência">
 
-<div class="total">Taxa de entrega: R$ <span id="taxa2">0.00</span></div>
-<div class="total">Total com entrega: R$ <span id="total2">0.00</span></div>
+<h2>💳 Forma de pagamento</h2>
 
-<button onclick="backStep(1)">Voltar</button>
-<button onclick="nextStep(3)">Continuar</button>
-</div>
+<select id="pagamento" onchange="verPix()">
+<option>Débito</option>
+<option>Crédito</option>
+<option>Pix</option>
+<option>Dinheiro</option>
+</select>
+
+<p id="pixmsg" style="display:none; color:#d60000; font-weight:bold;">
+💳 Pagamento via Pix<br>
+Envie o comprovante após o pagamento.<br>
+Chave Pix: 48092363000120
+</p>
+
+<button class="finalizar" onclick="finalizar()">Finalizar Pedido</button>
 
 </div>
 
 <script>
 
-let cart = {};
-let subtotal = 0;
+function alterar(id,valor){
+let el = document.getElementById(id);
+let atual = parseInt(el.innerText);
+if(atual + valor >= 0){
+el.innerText = atual + valor;
+}
+}
+
+function verPix(){
+let forma = document.getElementById("pagamento").value;
+let msg = document.getElementById("pixmsg");
+msg.style.display = forma === "Pix" ? "block" : "none";
+}
+
+function finalizar(){
+
+let bairro = document.getElementById("bairro").value.toLowerCase();
 let taxa = 0;
 
-function showTab(tab){
-document.getElementById("empadoes").classList.add("hidden");
-document.getElementById("combos").classList.add("hidden");
-document.getElementById("bebidas").classList.add("hidden");
-document.getElementById(tab).classList.remove("hidden");
+if(bairro && bairro !== "marambaia"){
+taxa = 5;
 }
 
-function changeQty(id, price, change){
-if(!cart[id]) cart[id]={qtd:0, price:price};
-cart[id].qtd += change;
-if(cart[id].qtd < 0) cart[id].qtd = 0;
-document.getElementById("qtd-"+id).innerText = cart[id].qtd;
-calcularTotal();
+if(taxa > 0){
+alert("Taxa de entrega para seu bairro: R$ 5,00");
+}else{
+alert("Entrega grátis para Marambaia 🎉");
 }
 
-function calcularTotal(){
-subtotal = 0;
-for(let item in cart){
-subtotal += cart[item].qtd * cart[item].price;
-}
-document.getElementById("subtotal").innerText = subtotal.toFixed(2);
-calcularTaxa();
-}
-
-function calcularTaxa(){
-let bairro = document.getElementById("bairro")?.value?.toLowerCase() || "";
-taxa = bairro.includes("marambaia") ? 0 : 5;
-
-document.getElementById("taxa").innerText = taxa.toFixed(2);
-document.getElementById("total").innerText = (subtotal + taxa).toFixed(2);
-
-if(document.getElementById("taxa2")){
-document.getElementById("taxa2").innerText = taxa.toFixed(2);
-document.getElementById("total2").innerText = (subtotal + taxa).toFixed(2);
-}
-}
-
-function nextStep(step){
-document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
-document.getElementById("step"+step).classList.add("active");
-}
-
-function backStep(step){
-document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
-document.getElementById("step"+step).classList.add("active");
 }
 
 </script>
