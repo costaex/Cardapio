@@ -17,7 +17,7 @@ header{text-align:center;padding:20px 10px;}
 header img{width:170px;}
 header h2{margin:5px 0 0;}
 
-.container{padding:15px;padding-bottom:110px;}
+.container{padding:15px;padding-bottom:120px;}
 
 .card{
 background:#fff;
@@ -31,36 +31,15 @@ box-shadow:0 6px 18px rgba(0,0,0,0.25);
 .card h4{margin:0;color:#5a2d0c;}
 .descricao{font-size:13px;margin:8px 0;color:#555;}
 
-.qtd-box{
-display:flex;
-align-items:center;
-gap:10px;
-margin-top:10px;
-}
-
-.qtd-box button{
-width:35px;
-height:35px;
-border:none;
-background:#d4a017;
-font-size:18px;
-font-weight:bold;
-border-radius:8px;
-}
-
-.qtd-num{
-font-size:18px;
-font-weight:bold;
-}
-
 button{
 background:#d4a017;
 color:#000;
 border:none;
-padding:12px;
-border-radius:10px;
+padding:10px;
+border-radius:8px;
 font-weight:bold;
 cursor:pointer;
+margin-top:8px;
 }
 
 .nav-buttons{
@@ -82,6 +61,22 @@ color:#000;
 padding:15px;
 text-align:center;
 font-weight:bold;
+font-size:18px;
+}
+
+.item-carrinho{
+background:#fff;
+color:#000;
+padding:8px;
+margin-bottom:5px;
+border-radius:8px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.lixeira{
+cursor:pointer;
 font-size:18px;
 }
 </style>
@@ -107,62 +102,46 @@ font-size:18px;
 Massa amanteigada feita com Qualy e trigo premium.
 Recheio cremoso de frango desfiado com cheiro-verde.
 </div>
-
-<label><input type="radio" name="milho" value="com milho"> Com milho</label>
-<label><input type="radio" name="milho" value="sem milho"> Sem milho</label>
-
-<div class="qtd-box">
-<button onclick="alterarQtd('qtd1',-1)">-</button>
-<span class="qtd-num" id="qtd1">0</span>
-<button onclick="alterarQtd('qtd1',1)">+</button>
+<label><input type="radio" name="milho1" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho1" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Empadão Frango Requeijão',18.99,'milho1')">Adicionar</button>
 </div>
+
+<div class="card">
+<h4>Frango Cremoso com Catupiry - R$18,99</h4>
+<div class="descricao">
+Massa amanteigada feita com Qualy e trigo premium.
+Recheio cremoso de frango com catupiry e cheiro-verde.
+</div>
+<label><input type="radio" name="milho2" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho2" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Empadão Frango Catupiry',18.99,'milho2')">Adicionar</button>
 </div>
 
 <h4>Combos</h4>
 
 <div class="card">
-<h4>Frango com Catupiry + Coca Lata - R$23,99</h4>
-<div class="descricao">
-Empadão 500g + Refrigerante lata.
-</div>
-<div class="qtd-box">
-<button onclick="alterarQtd('qtd2',-1)">-</button>
-<span class="qtd-num" id="qtd2">0</span>
-<button onclick="alterarQtd('qtd2',1)">+</button>
-</div>
+<h4>Frango Catupiry + Guaracrack - R$19,99</h4>
+<label><input type="radio" name="milho3" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho3" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Combo Catupiry + Guaracrack',19.99,'milho3')">Adicionar</button>
 </div>
 
 <div class="card">
-<h4>Frango com Requeijão + Guaraná Lata - R$23,99</h4>
-<div class="descricao">
-Empadão 500g + Refrigerante lata.
-</div>
-<div class="qtd-box">
-<button onclick="alterarQtd('qtd3',-1)">-</button>
-<span class="qtd-num" id="qtd3">0</span>
-<button onclick="alterarQtd('qtd3',1)">+</button>
-</div>
+<h4>Frango Requeijão + Guaracrack - R$19,99</h4>
+<label><input type="radio" name="milho4" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho4" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Combo Requeijão + Guaracrack',19.99,'milho4')">Adicionar</button>
 </div>
 
 <h4>Bebidas</h4>
 
 <div class="card">
-<h4>Coca-Cola Lata - R$5,00</h4>
-<div class="qtd-box">
-<button onclick="alterarQtd('qtd4',-1)">-</button>
-<span class="qtd-num" id="qtd4">0</span>
-<button onclick="alterarQtd('qtd4',1)">+</button>
-</div>
+<h4>Guaracrack - R$2,00</h4>
+<button onclick="adicionarItem('Guaracrack',2,null)">Adicionar</button>
 </div>
 
-<div class="card">
-<h4>Guaraná Lata - R$5,00</h4>
-<div class="qtd-box">
-<button onclick="alterarQtd('qtd5',-1)">-</button>
-<span class="qtd-num" id="qtd5">0</span>
-<button onclick="alterarQtd('qtd5',1)">+</button>
-</div>
-</div>
+<div id="listaCarrinho"></div>
 
 <div class="nav-buttons">
 <button onclick="proxima(2)">Próxima</button>
@@ -172,11 +151,10 @@ Empadão 500g + Refrigerante lata.
 <!-- ETAPA 2 -->
 <div class="etapa" id="etapa2">
 <h3>Etapa 2 - Endereço</h3>
-
-<input type="text" id="nome" placeholder="Nome">
-<input type="text" id="endereco" placeholder="Endereço">
-<input type="text" id="bairro" placeholder="Bairro">
-<input type="text" id="referencia" placeholder="Ponto de referência">
+<input type="text" id="nome" placeholder="Nome"><br><br>
+<input type="text" id="endereco" placeholder="Endereço"><br><br>
+<input type="text" id="bairro" placeholder="Bairro"><br><br>
+<input type="text" id="referencia" placeholder="Ponto de referência"><br><br>
 
 <div class="nav-buttons">
 <button onclick="voltar(1)">Voltar</button>
@@ -230,24 +208,39 @@ Total: R$ <span id="total">0.00</span>
 
 <script>
 
-function alterarQtd(id,valor){
-let el=document.getElementById(id);
-let num=parseInt(el.innerText);
-num+=valor;
-if(num<0)num=0;
-el.innerText=num;
-calcular();
+let carrinho=[];
+
+function adicionarItem(nome,preco,tipoMilho){
+let opcao="";
+if(tipoMilho){
+let milho=document.querySelector('input[name="'+tipoMilho+'"]:checked');
+if(milho) opcao=" ("+milho.value+")";
+}
+carrinho.push({nome:nome+opcao,preco:preco});
+renderCarrinho();
 }
 
-function calcular(){
+function removerItem(index){
+carrinho.splice(index,1);
+renderCarrinho();
+}
+
+function renderCarrinho(){
+let lista=document.getElementById("listaCarrinho");
+lista.innerHTML="";
 let total=0;
-total+=qtd1.innerText*18.99;
-total+=qtd2.innerText*23.99;
-total+=qtd3.innerText*23.99;
-total+=qtd4.innerText*5;
-total+=qtd5.innerText*5;
-document.getElementById('total').innerText=total.toFixed(2);
-return total;
+
+carrinho.forEach((item,i)=>{
+total+=item.preco;
+lista.innerHTML+=`
+<div class="item-carrinho">
+<span>${item.nome} - R$${item.preco.toFixed(2)}</span>
+<span class="lixeira" onclick="removerItem(${i})">🗑</span>
+</div>
+`;
+});
+
+document.getElementById("total").innerText=total.toFixed(2);
 }
 
 function proxima(n){
@@ -268,42 +261,37 @@ pixDiv.style.display=(pag=="Pix")?"block":"none";
 }
 
 function gerarResumo(){
-let total=calcular();
+let total=parseFloat(document.getElementById("total").innerText);
 let taxa=(bairro.value.toLowerCase()=="marambaia")?0:5;
-if(total<18){alert("Pedido mínimo R$18");voltar(1);return;}
-let final=total+taxa;
 
-let resumo="NOVO PEDIDO\n\n";
-
-if(qtd1.innerText>0){
-let milho=document.querySelector('input[name="milho"]:checked');
-let detalhe=milho?(" ("+milho.value+")"):"";
-resumo+=qtd1.innerText+"x Empadão"+detalhe+"\n";
+if(total<18){
+alert("Pedido mínimo R$18");
+voltar(1);
+return;
 }
 
-if(qtd2.innerText>0) resumo+=qtd2.innerText+"x Combo Catupiry\n";
-if(qtd3.innerText>0) resumo+=qtd3.innerText+"x Combo Requeijão\n";
-if(qtd4.innerText>0) resumo+=qtd4.innerText+"x Coca Lata\n";
-if(qtd5.innerText>0) resumo+=qtd5.innerText+"x Guaraná Lata\n";
+let final=total+taxa;
 
-resumo+="\nSubtotal: R$"+total.toFixed(2);
-if(taxa>0) resumo+="\nTaxa: R$5,00";
-resumo+="\nTotal: R$"+final.toFixed(2);
+let texto="NOVO PEDIDO\n\n";
+carrinho.forEach(item=> texto+="1x "+item.nome+"\n");
 
-document.getElementById("resumo").innerText=resumo;
+texto+="\nSubtotal: R$"+total.toFixed(2);
+if(taxa>0) texto+="\nTAXA DE ENTREGA: R$5,00";
+texto+="\nTotal: R$"+final.toFixed(2);
+
+document.getElementById("resumo").innerText=texto;
 }
 
 function enviarPedido(){
-let texto=encodeURIComponent(resumo.innerText+
-"\n\nNome: "+nome.value+
-"\nEndereço: "+endereco.value+
-"\nBairro: "+bairro.value+
-"\nReferência: "+referencia.value+
-"\nPagamento: "+pagamento.value+
-(troco.value?("\nTroco para: "+troco.value):"")
-);
+let texto=document.getElementById("resumo").innerText;
+texto+="\n\nNome: "+nome.value;
+texto+="\nEndereço: "+endereco.value;
+texto+="\nBairro: "+bairro.value;
+texto+="\nReferência: "+referencia.value;
+texto+="\nPagamento: "+pagamento.value;
+if(troco.value) texto+="\nTroco para: "+troco.value;
 
-window.open("https://wa.me/5521969592922?text="+texto);
+window.open("https://wa.me/5521969592922?text="+encodeURIComponent(texto));
 }
 
 </script>
