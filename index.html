@@ -291,6 +291,11 @@ Total: R$ <span id="total">0.00</span>
 <script>
 let carrinho=[];
 
+/* MODO ADMIN */
+const SENHA="1442";
+let params=new URLSearchParams(window.location.search);
+let modoAdmin=params.get("adm")===SENHA;
+
 function obterHorarioHoje(){
 let dia=new Date().getDay();
 if(dia==1) return null;
@@ -304,6 +309,7 @@ return null;
 }
 
 function dentroDoHorario(){
+if(modoAdmin) return true;
 let h=obterHorarioHoje();
 if(!h) return false;
 let agora=new Date();
@@ -313,15 +319,13 @@ return atual>=h.inicio && atual<=h.fim;
 
 function atualizarStatus(){
 let status=document.getElementById("statusLoja");
-let h=obterHorarioHoje();
-let agora=new Date();
-let atual=agora.getHours()+(agora.getMinutes()/60);
-
+if(modoAdmin){
+status.innerHTML="🛠 MODO ADMIN ATIVO";
+status.className="status aberto";
+return;
+}
 if(dentroDoHorario()){
-let faltam=(h.fim-atual)*60;
-let horas=Math.floor(faltam/60);
-let minutos=Math.floor(faltam%60);
-status.innerHTML=`🟢 Estamos Abertos | Fechamos em ${horas}h ${minutos}min`;
+status.innerHTML="🟢 Estamos Abertos";
 status.className="status aberto";
 }else{
 status.innerHTML="🔴 Estamos Fechados";
@@ -339,7 +343,6 @@ return false;
 
 function adicionarItem(nome,preco,tipoMilho){
 if(bloquear()) return;
-
 let opcao="";
 if(tipoMilho){
 let milho=document.querySelector('input[name="'+tipoMilho+'"]:checked');
@@ -409,7 +412,6 @@ document.getElementById("resumo").innerText=texto;
 
 function enviarPedido(){
 if(bloquear()) return;
-
 let texto=document.getElementById("resumo").innerText;
 texto+="\n\nNome: "+nome.value;
 texto+="\nEndereço: "+endereco.value;
