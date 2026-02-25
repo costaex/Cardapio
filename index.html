@@ -197,3 +197,303 @@ Recheio cremoso de frango desfiado com catupiry e cheiro-verde.
 </div>
 
 <!-- ETAPAS 2,3,4 permanecem exatamente iguais ao anterior -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cantinho do Empadão</title>
+
+<style>
+body{
+font-family:'Segoe UI',Arial;
+margin:0;
+background:linear-gradient(180deg,#5a2d0c,#3b1d08);
+color:#fff;
+}
+
+header{text-align:center;padding:20px 10px;}
+header img{width:170px;}
+header h2{margin:5px 0 0;}
+
+.container{padding:15px;padding-bottom:120px;}
+
+.card{
+background:#fff;
+color:#333;
+padding:15px;
+margin-bottom:15px;
+border-radius:15px;
+box-shadow:0 6px 18px rgba(0,0,0,0.25);
+}
+
+.card h4{margin:0;color:#5a2d0c;}
+.descricao{font-size:13px;margin:8px 0;color:#555;}
+
+button{
+background:#d4a017;
+color:#000;
+border:none;
+padding:10px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-top:8px;
+}
+
+.nav-buttons{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+.etapa{display:none;}
+.etapa.ativa{display:block;}
+
+.carrinho-total{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#d4a017;
+color:#000;
+padding:15px;
+text-align:center;
+font-weight:bold;
+font-size:18px;
+}
+
+.item-carrinho{
+background:#fff;
+color:#000;
+padding:8px;
+margin-bottom:5px;
+border-radius:8px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.lixeira{
+cursor:pointer;
+font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<img src="Logoep.jpg">
+<h2>Cantinho do Empadão</h2>
+</header>
+
+<div class="container">
+
+<!-- ETAPA 1 -->
+<div class="etapa ativa" id="etapa1">
+<h3>Etapa 1 - Escolher Itens</h3>
+
+<h4>Empadões</h4>
+
+<div class="card">
+<h4>Frango Cremoso com Requeijão - R$18,99</h4>
+<div class="descricao">
+Massa amanteigada feita com Qualy e trigo premium.
+Recheio cremoso de frango desfiado com cheiro-verde.
+</div>
+<label><input type="radio" name="milho1" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho1" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Empadão Frango Requeijão',18.99,'milho1')">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Frango Cremoso com Catupiry - R$18,99</h4>
+<div class="descricao">
+Massa amanteigada feita com Qualy e trigo premium.
+Recheio cremoso de frango com catupiry e cheiro-verde.
+</div>
+<label><input type="radio" name="milho2" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho2" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Empadão Frango Catupiry',18.99,'milho2')">Adicionar</button>
+</div>
+
+<h4>Combos</h4>
+
+<div class="card">
+<h4>Frango Catupiry + Guaracrack - R$19,99</h4>
+<label><input type="radio" name="milho3" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho3" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Combo Catupiry + Guaracrack',19.99,'milho3')">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Frango Requeijão + Guaracrack - R$19,99</h4>
+<label><input type="radio" name="milho4" value="com milho"> Com milho</label>
+<label><input type="radio" name="milho4" value="sem milho"> Sem milho</label>
+<button onclick="adicionarItem('Combo Requeijão + Guaracrack',19.99,'milho4')">Adicionar</button>
+</div>
+
+<h4>Bebidas</h4>
+
+<div class="card">
+<h4>Guaracrack - R$2,00</h4>
+<button onclick="adicionarItem('Guaracrack',2,null)">Adicionar</button>
+</div>
+
+<div id="listaCarrinho"></div>
+
+<div class="nav-buttons">
+<button onclick="proxima(2)">Próxima</button>
+</div>
+</div>
+
+<!-- ETAPA 2 -->
+<div class="etapa" id="etapa2">
+<h3>Etapa 2 - Endereço</h3>
+<input type="text" id="nome" placeholder="Nome"><br><br>
+<input type="text" id="endereco" placeholder="Endereço"><br><br>
+<input type="text" id="bairro" placeholder="Bairro"><br><br>
+<input type="text" id="referencia" placeholder="Ponto de referência"><br><br>
+
+<div class="nav-buttons">
+<button onclick="voltar(1)">Voltar</button>
+<button onclick="proxima(3)">Próxima</button>
+</div>
+</div>
+
+<!-- ETAPA 3 -->
+<div class="etapa" id="etapa3">
+<h3>Etapa 3 - Forma de Pagamento</h3>
+
+<select id="pagamento" onchange="verificarPagamento()">
+<option value="Débito">Débito</option>
+<option value="Crédito">Crédito</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Pix">Pix</option>
+</select>
+
+<div id="trocoDiv" style="display:none;">
+Precisa de troco?
+<input type="text" id="troco">
+</div>
+
+<div id="pixDiv" style="display:none;">
+Chave Pix: 48092363000120<br>
+⚠️ Enviar comprovante para o pedido ser preparado.
+</div>
+
+<div class="nav-buttons">
+<button onclick="voltar(2)">Voltar</button>
+<button onclick="proxima(4)">Próxima</button>
+</div>
+</div>
+
+<!-- ETAPA 4 -->
+<div class="etapa" id="etapa4">
+<h3>Etapa 4 - Resumo</h3>
+<div id="resumo"></div>
+
+<div class="nav-buttons">
+<button onclick="voltar(3)">Voltar</button>
+<button onclick="enviarPedido()">Finalizar Pedido</button>
+</div>
+</div>
+
+</div>
+
+<div class="carrinho-total">
+Total: R$ <span id="total">0.00</span>
+</div>
+
+<script>
+
+let carrinho=[];
+
+function adicionarItem(nome,preco,tipoMilho){
+let opcao="";
+if(tipoMilho){
+let milho=document.querySelector('input[name="'+tipoMilho+'"]:checked');
+if(milho) opcao=" ("+milho.value+")";
+}
+carrinho.push({nome:nome+opcao,preco:preco});
+renderCarrinho();
+}
+
+function removerItem(index){
+carrinho.splice(index,1);
+renderCarrinho();
+}
+
+function renderCarrinho(){
+let lista=document.getElementById("listaCarrinho");
+lista.innerHTML="";
+let total=0;
+
+carrinho.forEach((item,i)=>{
+total+=item.preco;
+lista.innerHTML+=`
+<div class="item-carrinho">
+<span>${item.nome} - R$${item.preco.toFixed(2)}</span>
+<span class="lixeira" onclick="removerItem(${i})">🗑</span>
+</div>
+`;
+});
+
+document.getElementById("total").innerText=total.toFixed(2);
+}
+
+function proxima(n){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById('etapa'+n).classList.add('ativa');
+if(n==4) gerarResumo();
+}
+
+function voltar(n){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById('etapa'+n).classList.add('ativa');
+}
+
+function verificarPagamento(){
+let pag=pagamento.value;
+trocoDiv.style.display=(pag=="Dinheiro")?"block":"none";
+pixDiv.style.display=(pag=="Pix")?"block":"none";
+}
+
+function gerarResumo(){
+let total=parseFloat(document.getElementById("total").innerText);
+let taxa=(bairro.value.toLowerCase()=="marambaia")?0:5;
+
+if(total<18){
+alert("Pedido mínimo R$18");
+voltar(1);
+return;
+}
+
+let final=total+taxa;
+
+let texto="NOVO PEDIDO\n\n";
+carrinho.forEach(item=> texto+="1x "+item.nome+"\n");
+
+texto+="\nSubtotal: R$"+total.toFixed(2);
+if(taxa>0) texto+="\nTAXA DE ENTREGA: R$5,00";
+texto+="\nTotal: R$"+final.toFixed(2);
+
+document.getElementById("resumo").innerText=texto;
+}
+
+function enviarPedido(){
+let texto=document.getElementById("resumo").innerText;
+texto+="\n\nNome: "+nome.value;
+texto+="\nEndereço: "+endereco.value;
+texto+="\nBairro: "+bairro.value;
+texto+="\nReferência: "+referencia.value;
+texto+="\nPagamento: "+pagamento.value;
+if(troco.value) texto+="\nTroco para: "+troco.value;
+
+window.open("https://wa.me/5521969592922?text="+encodeURIComponent(texto));
+}
+
+</script>
+
+</body>
+</html>
