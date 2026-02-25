@@ -380,25 +380,54 @@ renderCarrinho();
 }
 
 function renderCarrinho(){
-let lista=document.getElementById("listaCarrinho");
-lista.innerHTML="";
-let total=0;
-carrinho.forEach((item,i)=>{
-total+=item.preco;
-lista.innerHTML+=`
-<div class="item-carrinho">
-<span>${item.nome} - R$${item.preco.toFixed(2)}</span>
-<span class="lixeira" onclick="removerItem(${i})">🗑</span>
-</div>`;
-});
-document.getElementById("total").innerText=total.toFixed(2);
+  let lista = document.getElementById("listaCarrinho");
+  lista.innerHTML = "";
+  let total = 0;
+
+  carrinho.forEach((item,i)=>{
+    total += item.preco;
+    lista.innerHTML += `
+      <div class="item-carrinho">
+        <span>${item.nome} - R$${item.preco.toFixed(2)}</span>
+        <span class="lixeira" onclick="removerItem(${i})">🗑</span>
+      </div>`;
+  });
+
+  document.getElementById("total").innerText = total.toFixed(2);
+
+  // MOSTRAR quanto falta para pedido mínimo
+  let minimoDiv = document.getElementById("minimoAviso");
+  if(!minimoDiv){
+    minimoDiv = document.createElement("div");
+    minimoDiv.id = "minimoAviso";
+    minimoDiv.style.color = "#ffd700";
+    minimoDiv.style.fontWeight = "bold";
+    minimoDiv.style.marginTop = "10px";
+    lista.appendChild(minimoDiv);
+  }
+
+  if(total < PEDIDO_MINIMO){
+    minimoDiv.innerText = `⚠️ Pedido mínimo R$${PEDIDO_MINIMO.toFixed(2)}. Faltam R$${(PEDIDO_MINIMO - total).toFixed(2)} para poder finalizar.`;
+  } else {
+    minimoDiv.innerText = "";
+  }
 }
 
 function proxima(n){
-if(bloquear()) return;
-document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
-document.getElementById('etapa'+n).classList.add('ativa');
-if(n==4) gerarResumo();
+  if(bloquear()) return;
+
+  if(n === 4){ // Etapa 4 = Resumo
+    let total = parseFloat(document.getElementById("total").innerText);
+    if(total < PEDIDO_MINIMO){
+      alert(`⚠️ Pedido mínimo é R$${PEDIDO_MINIMO.toFixed(2)}! Adicione mais itens ao carrinho.`);
+      return;
+    }
+  }
+
+  document.querySelectorAll('.etapa').forEach(e => e.classList.remove('ativa'));
+  document.getElementById('etapa'+n).classList.add('ativa');
+
+  if(n == 4) gerarResumo();
 }
 
 function voltar(n){
