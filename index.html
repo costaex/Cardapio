@@ -17,6 +17,25 @@ header{text-align:center;padding:20px 10px;}
 header img{width:170px;}
 header h2{margin:5px 0 0;}
 
+.status{
+text-align:center;
+font-weight:bold;
+padding:10px;
+font-size:15px;
+}
+
+.aberto{background:#2ecc71;}
+.fechado{background:#e74c3c;}
+
+.horario-box{
+background:#d4a017;
+color:#000;
+padding:15px;
+border-radius:12px;
+margin:15px;
+font-size:14px;
+}
+
 .container{padding:15px;padding-bottom:120px;}
 
 .promocao{
@@ -105,6 +124,19 @@ margin-bottom:10px;
 <img src="Logoep.jpg">
 <h2>Cantinho do Empadão</h2>
 </header>
+
+<div id="statusLoja" class="status"></div>
+
+<div class="horario-box">
+<strong>Nosso horário de funcionamento:</strong><br>
+• 🕔 Domingo: 17:00 - 23:00<br>
+• 🚫 Segunda-feira: Fechada<br>
+• 🕔 Terça-feira: 17:00 - 23:00<br>
+• 🕖 Quarta-feira: 19:00 - 23:30<br>
+• 🕖 Quinta-feira: 19:00 - 23:30<br>
+• 🕖 Sexta-feira: 19:00 - 23:30<br>
+• 🕔 Sábado: 17:00 - 23:00
+</div>
 
 <div class="container">
 
@@ -259,7 +291,55 @@ Total: R$ <span id="total">0.00</span>
 <script>
 let carrinho=[];
 
+function obterHorarioHoje(){
+let dia=new Date().getDay();
+if(dia==1) return null;
+if(dia==0) return {inicio:17,fim:23};
+if(dia==2) return {inicio:17,fim:23};
+if(dia==3) return {inicio:19,fim:23.5};
+if(dia==4) return {inicio:19,fim:23.5};
+if(dia==5) return {inicio:19,fim:23.5};
+if(dia==6) return {inicio:17,fim:23};
+return null;
+}
+
+function dentroDoHorario(){
+let h=obterHorarioHoje();
+if(!h) return false;
+let agora=new Date();
+let atual=agora.getHours()+(agora.getMinutes()/60);
+return atual>=h.inicio && atual<=h.fim;
+}
+
+function atualizarStatus(){
+let status=document.getElementById("statusLoja");
+let h=obterHorarioHoje();
+let agora=new Date();
+let atual=agora.getHours()+(agora.getMinutes()/60);
+
+if(dentroDoHorario()){
+let faltam=(h.fim-atual)*60;
+let horas=Math.floor(faltam/60);
+let minutos=Math.floor(faltam%60);
+status.innerHTML=`🟢 Estamos Abertos | Fechamos em ${horas}h ${minutos}min`;
+status.className="status aberto";
+}else{
+status.innerHTML="🔴 Estamos Fechados";
+status.className="status fechado";
+}
+}
+
+function bloquear(){
+if(!dentroDoHorario()){
+alert("Estamos fechados no momento.");
+return true;
+}
+return false;
+}
+
 function adicionarItem(nome,preco,tipoMilho){
+if(bloquear()) return;
+
 let opcao="";
 if(tipoMilho){
 let milho=document.querySelector('input[name="'+tipoMilho+'"]:checked');
@@ -269,8 +349,8 @@ carrinho.push({nome:nome+opcao,preco:preco});
 renderCarrinho();
 }
 
-function removerItem(index){
-carrinho.splice(index,1);
+function removerItem(i){
+carrinho.splice(i,1);
 renderCarrinho();
 }
 
@@ -278,21 +358,19 @@ function renderCarrinho(){
 let lista=document.getElementById("listaCarrinho");
 lista.innerHTML="";
 let total=0;
-
 carrinho.forEach((item,i)=>{
 total+=item.preco;
 lista.innerHTML+=`
 <div class="item-carrinho">
 <span>${item.nome} - R$${item.preco.toFixed(2)}</span>
 <span class="lixeira" onclick="removerItem(${i})">🗑</span>
-</div>
-`;
+</div>`;
 });
-
 document.getElementById("total").innerText=total.toFixed(2);
 }
 
 function proxima(n){
+if(bloquear()) return;
 document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
 document.getElementById('etapa'+n).classList.add('ativa');
 if(n==4) gerarResumo();
@@ -321,9 +399,7 @@ return;
 
 let final=total+taxa;
 let texto="NOVO PEDIDO\n\n";
-
 carrinho.forEach(item=> texto+="1x "+item.nome+"\n");
-
 texto+="\nSubtotal: R$"+total.toFixed(2);
 if(taxa>0) texto+="\nTAXA DE ENTREGA: R$5,00";
 texto+="\nTotal: R$"+final.toFixed(2);
@@ -332,6 +408,8 @@ document.getElementById("resumo").innerText=texto;
 }
 
 function enviarPedido(){
+if(bloquear()) return;
+
 let texto=document.getElementById("resumo").innerText;
 texto+="\n\nNome: "+nome.value;
 texto+="\nEndereço: "+endereco.value;
@@ -342,6 +420,9 @@ if(troco.value) texto+="\nTroco para: "+troco.value;
 
 window.open("https://wa.me/5521969592922?text="+encodeURIComponent(texto));
 }
+
+atualizarStatus();
+setInterval(atualizarStatus,60000);
 </script>
 
 </body>
