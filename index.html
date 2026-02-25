@@ -4,304 +4,273 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cantinho do Empadão</title>
+
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#333;}
-header{background:#d90429;color:white;padding:15px;text-align:center;display:flex;flex-direction:column;align-items:center;}
-header img{height:150px;border-radius:10px;margin-top:10px;}
-header h1{margin:0;color:white;}
-h2{margin-top:15px;color:#fff;background:#d90429;padding:5px;border-radius:5px;}
-.step{display:none;}
-.produto{background:#fff;border:2px solid #d90429;margin:5px 0;border-radius:10px;padding:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.produto-info{margin-bottom:5px;font-size:13px;}
-.produto-contador{display:flex;align-items:center;gap:2px;margin-top:3px;}
-.produto-contador button{
-    background:#d90429;color:white;border:none;padding:2px 4px;border-radius:4px;font-weight:bold;font-size:10px;width:22px;
-    transition:0.2s;
+body{
+font-family:Arial, sans-serif;
+margin:0;
+background:#fff5f5;
 }
-.produto-contador button:hover{transform:scale(1.2);}
-.produto-contador span{min-width:20px;text-align:center;display:inline-block;font-size:10px;}
-select{width:100%;padding:4px;margin-top:3px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
-button{background:#d90429;color:white;border:none;padding:8px;border-radius:6px;width:100%;margin-top:8px;font-weight:bold;font-size:14px;transition:0.2s;}
-button:hover{opacity:0.9;transform:scale(1.02);}
-button.voltar{background:#aaa;}
-input{width:100%;padding:6px;margin-top:6px;border:1px solid #ccc;border-radius:5px;font-size:12px;}
-.total{text-align:right;font-weight:bold;margin-top:8px;font-size:16px;color:#d90429;}
-#fechado{display:none;text-align:center;margin-top:50px;font-size:18px;color:#d90429;}
-#horarios{margin-top:10px;text-align:center;font-size:14px;}
-#mensagemFinal{display:none;text-align:center;margin-top:20px;font-size:18px;color:green;}
-#pixInfo{display:none;text-align:center;margin-top:5px;font-size:14px;color:#d90429;background:#ffeaea;padding:5px;border-radius:5px;}
-#resumoPedido{margin-top:10px;margin-bottom:10px;border:1px solid #d90429;padding:8px;border-radius:5px;background:#ffeaea;font-size:14px;}
+
+header{
+background:#c40000;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.logo{
+width:180px;
+display:block;
+margin:15px auto;
+}
+
+.container{
+padding:15px;
+}
+
+h2{
+color:#c40000;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.promo{
+border:2px solid #c40000;
+background:#fff0f0;
+}
+
+button{
+background:#c40000;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+.qty{
+width:30px;
+text-align:center;
+}
+
+.step{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+.total{
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.pix-box{
+background:#fff3cd;
+padding:10px;
+border-radius:8px;
+margin-top:10px;
+font-size:14px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>🥟 Cantinho do Empadão</h1>
-<img src="Logoep.jpg" alt="Logo">
+<h1>Cantinho do Empadão</h1>
+<img src="Logoep.jpg" class="logo">
 </header>
 
-<div id="fechado">
-❌ No momento estamos fechados. Confira nosso horário de funcionamento:
-<div id="horarios"></div>
+<div class="container">
+
+<!-- ETAPA 1 -->
+<div class="step active" id="step1">
+
+<h2>🔥 Promoção em Destaque</h2>
+
+<div class="card promo">
+<h3>FRANGO + GUARACRAC</h3>
+<p><strong>EMPADÃO DE FRANGO 500g + GUARACRAC 550ml</strong></p>
+<p><del>De R$ 20,00</del> <strong>por R$ 19,00</strong></p>
+<button onclick="addItem('Promo Frango + Guaracrack',19)">Adicionar</button>
 </div>
 
-<!-- Etapa 1: Pedido -->
-<div id="step1" class="step">
-<h2>Escolha seus produtos</h2>
+<h2>🥧 Empadões 500g</h2>
 
-<h3>Empadões</h3>
-
-<div class="produto">
-  <div class="produto-info">
-    <h4>Empadão de Frango com Requeijão - R$20,00</h4>
-    <label>Milho:</label>
-    <select id="milho_frango_requeijao">
-      <option value="false">Sem Milho</option>
-      <option value="true">Com Milho</option>
-    </select>
-  </div>
-  <div class="produto-contador">
-    <button onclick="alterar('frango_requeijao',20,-1)">-</button>
-    <span id="qtd_frango_requeijao">0</span>
-    <button onclick="alterar('frango_requeijao',20,1)">+</button>
-  </div>
-  <p id="total_frango_requeijao">R$ 0,00</p>
+<div class="card">
+<h3>Frango Cremoso com Requeijão Crioulo - 500g</h3>
+<p>Massa amanteigada, feita com Qualy e trigo premium, dourada e saborosa.  
+Recheio bem cremoso de frango desfiado, cheiro-verde e requeijão crioulo.</p>
+<button onclick="addItem('Frango com Requeijão',20)">Adicionar</button>
 </div>
 
-<div class="produto">
-  <div class="produto-info">
-    <h4>Empadão de Frango com Catupiry - R$22,00</h4>
-    <label>Milho:</label>
-    <select id="milho_frango_catupiry">
-      <option value="false">Sem Milho</option>
-      <option value="true">Com Milho</option>
-    </select>
-  </div>
-  <div class="produto-contador">
-    <button onclick="alterar('frango_catupiry',22,-1)">-</button>
-    <span id="qtd_frango_catupiry">0</span>
-    <button onclick="alterar('frango_catupiry',22,1)">+</button>
-  </div>
-  <p id="total_frango_catupiry">R$ 0,00</p>
+<div class="card">
+<h3>Frango com Catupiry - 500g</h3>
+<p>Massa amanteigada premium com recheio cremoso de frango desfiado e catupiry original.</p>
+<button onclick="addItem('Frango com Catupiry',20)">Adicionar</button>
 </div>
 
-<div class="produto">
-  <div class="produto-info">
-    <h4>Empadão de Frango simples - R$18,00</h4>
-    <label>Milho:</label>
-    <select id="milho_frango_simples">
-      <option value="false">Sem Milho</option>
-      <option value="true">Com Milho</option>
-    </select>
-  </div>
-  <div class="produto-contador">
-    <button onclick="alterar('frango_simples',18,-1)">-</button>
-    <span id="qtd_frango_simples">0</span>
-    <button onclick="alterar('frango_simples',18,1)">+</button>
-  </div>
-  <p id="total_frango_simples">R$ 0,00</p>
+<div class="card">
+<h3>Frango Tradicional - 500g</h3>
+<p>Massa amanteigada premium com frango desfiado bem temperado e cheiro-verde.</p>
+<button onclick="addItem('Frango Tradicional',18)">Adicionar</button>
 </div>
 
-<h3>Bebidas</h3>
+<h2>🥤 Bebidas</h2>
 
-<div class="produto">
-  <div class="produto-info">
-    <h4>Guaracrack - R$7,00</h4>
-  </div>
-  <div class="produto-contador">
-    <button onclick="alterar('guaracrack',7,-1)">-</button>
-    <span id="qtd_guaracrack">0</span>
-    <button onclick="alterar('guaracrack',7,1)">+</button>
-  </div>
-  <p id="total_guaracrack">R$ 0,00</p>
+<div class="card">
+<p>Coca-Cola Lata 550ml</p>
+<button onclick="addItem('Coca-Cola 550ml',6)">Adicionar</button>
 </div>
 
-<div class="produto">
-  <div class="produto-info">
-    <h4>Coca-Cola Lata 550ml - R$6,00</h4>
-  </div>
-  <div class="produto-contador">
-    <button onclick="alterar('coca550',6,-1)">-</button>
-    <span id="qtd_coca550">0</span>
-    <button onclick="alterar('coca550',6,1)">+</button>
-  </div>
-  <p id="total_coca550">R$ 0,00</p>
+<div class="card">
+<p>Guaracrack 550ml</p>
+<button onclick="addItem('Guaracrack 550ml',5)">Adicionar</button>
 </div>
 
-<div class="produto">
-  <div class="produto-info">
-    <h4>Guaraná Lata 550ml - R$6,00</h4>
-  </div>
-  <div class="produto-contador">
-    <button onclick="alterar('guarana550',6,-1)">-</button>
-    <span id="qtd_guarana550">0</span>
-    <button onclick="alterar('guarana550',6,1)">+</button>
-  </div>
-  <p id="total_guarana550">R$ 0,00</p>
+<div class="total">Total: R$ <span id="total">0.00</span></div>
+
+<br>
+<button onclick="nextStep(2)">Continuar</button>
+
 </div>
 
-<p class="total" id="totalPedido">Total: R$ 0,00</p>
-<button onclick="proximaEtapa(2)">➡ Continuar</button>
+
+<!-- ETAPA 2 -->
+<div class="step" id="step2">
+
+<h2>📍 Seus Dados</h2>
+
+<input type="text" id="nome" placeholder="Seu Nome"><br><br>
+<input type="text" id="endereco" placeholder="Endereço completo"><br><br>
+
+<button onclick="backStep(1)">Voltar</button>
+<button onclick="nextStep(3)">Continuar</button>
+
 </div>
 
-<!-- Etapa 2: Dados do cliente -->
-<div id="step2" class="step">
-<h2>Informações de entrega</h2>
-<input type="text" id="nome" placeholder="Nome completo">
-<input type="text" id="telefone" placeholder="Telefone">
-<input type="text" id="endereco" placeholder="Endereço completo (rua, número, bairro)">
-<button class="voltar" onclick="proximaEtapa(1)">⬅ Voltar</button>
-<button onclick="proximaEtapa(3)">➡ Continuar</button>
-</div>
 
-<!-- Etapa 3: Pagamento -->
-<div id="step3" class="step">
-<h2>Resumo do pedido</h2>
-<div id="resumoPedido"></div>
+<!-- ETAPA 3 -->
+<div class="step" id="step3">
 
-<h2>Pagamento</h2>
-<select id="pagamento" onchange="verTroco()">
-  <option value="debito">Débito</option>
-  <option value="credito">Crédito</option>
-  <option value="dinheiro">Dinheiro</option>
-  <option value="pix">Pix</option>
+<h2>💳 Pagamento</h2>
+
+<select id="pagamento" onchange="checkPayment()">
+<option value="Débito">Cartão Débito</option>
+<option value="Crédito">Cartão Crédito</option>
+<option value="Pix">Pix</option>
+<option value="Dinheiro">Dinheiro</option>
 </select>
-<input type="number" id="troco" placeholder="Troco para quanto?" style="display:none">
-<div id="pixInfo">
-<b>💳 Pagamento via Pix</b><br>
-Para pedidos pelo Pix, por favor envie o comprovante após realizar o pagamento.<br>
-Nossa chave Pix é: 48092363000120<br>
-Titular: Cantinho do Empadão Ltda
+
+<div id="trocoBox" style="display:none;">
+<br>
+<input type="text" id="troco" placeholder="Precisa de troco para quanto?">
 </div>
 
-<p class="total" id="totalEtapa3">Total: R$ 0,00</p>
-<button class="voltar" onclick="proximaEtapa(2)">⬅ Voltar</button>
-<button onclick="confirmarPedido()">✅ Confirmar Pedido</button>
+<div id="pixMessage" class="pix-box" style="display:none;">
+💳 <strong>Pagamento via Pix</strong><br><br>
+Para pedidos pelo Pix, por favor envie o comprovante após realizar o pagamento.<br><br>
+Nossa chave Pix é: <strong>48092363000120</strong><br>
+Titular: <strong>EMPADÕES LTDA</strong>
 </div>
 
-<div id="mensagemFinal">🎉 Obrigado pela compra! Seu pedido foi enviado com sucesso.</div>
+<h3>🧾 Seu Pedido:</h3>
+<div id="resumo"></div>
+
+<div class="total">Total Final: R$ <span id="totalFinal">0.00</span></div>
+
+<br>
+<button onclick="backStep(2)">Voltar</button>
+<button onclick="finalizar()">Confirmar Pedido</button>
+
+</div>
+
+</div>
 
 <script>
-// Horários
-const horarios = {
-    "0":["17:00","23:00"],"1":null,"2":["17:00","23:00"],"3":["19:00","23:30"],"4":["19:00","23:30"],"5":["19:00","23:30"],"6":["17:00","23:00"]
-};
-const horariosTexto = ["Domingo: 17:00 - 23:00","Segunda-feira: Fechada","Terça-feira: 17:00 - 23:00","Quarta-feira: 19:00 - 23:30","Quinta-feira: 19:00 - 23:30","Sexta-feira: 19:00 - 23:30","Sábado: 17:00 - 23:00"];
 
-// Acesso admin
-const acessoAdm = new URLSearchParams(window.location.search).get('adm')==='1234';
+let cart = [];
+let total = 0;
 
-function pad(n){ return n<10 ? '0'+n : n; }
-
-function conferirHorario(){
-    const agora = new Date();
-    const dia = agora.getDay();
-    const hora = agora.getHours();
-    const min = agora.getMinutes();
-    const horarioAtual = parseFloat(pad(hora)+'.'+pad(min));
-    const abertura = horarios[dia]?parseFloat(horarios[dia][0].replace(':','.')):null;
-    const fechamento = horarios[dia]?parseFloat(horarios[dia][1].replace(':','.')):null;
-    if((abertura && horarioAtual>=abertura && horarioAtual<=fechamento) || acessoAdm){
-        document.getElementById('step1').style.display='block';
-        atualizarTotal();
-    } else {
-        document.getElementById('fechado').style.display='block';
-        document.getElementById('horarios').innerHTML=horariosTexto.join('<br>');
-    }
+function addItem(nome, preco){
+cart.push({nome, preco});
+total += preco;
+updateTotal();
 }
 
-// Etapas
-function proximaEtapa(n){
-    document.querySelectorAll('.step').forEach(s=>s.style.display='none');
-    document.getElementById('step'+n).style.display='block';
-    atualizarResumo();
-    atualizarTotalEtapa3();
+function updateTotal(){
+document.getElementById("total").innerText = total.toFixed(2);
+document.getElementById("totalFinal").innerText = total.toFixed(2);
 }
 
-// Contadores
-function alterar(id,preco,quant){
-    const qtdElem=document.getElementById("qtd_"+id);
-    const totalElem=document.getElementById("total_"+id);
-    let qtd=parseInt(qtdElem.innerText)+quant;
-    if(qtd<0) qtd=0;
-    qtdElem.innerText=qtd;
-    totalElem.innerText="R$ "+(qtd*preco).toFixed(2);
-    atualizarTotal();
+function nextStep(step){
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+document.getElementById("step"+step).classList.add("active");
+updateResumo();
 }
 
-// Atualiza total do pedido
-function atualizarTotal(){
-    const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
-    let total=0;
-    produtos.forEach(p=>{
-        const preco=parseFloat(document.getElementById("total_"+p).innerText.replace('R$ ',''));
-        total+=preco;
-    });
-    document.getElementById('totalPedido').innerText="Total: R$ "+total.toFixed(2);
-    atualizarResumo();
-    atualizarTotalEtapa3();
+function backStep(step){
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+document.getElementById("step"+step).classList.add("active");
 }
 
-function atualizarTotalEtapa3(){
-    const total=document.getElementById('totalPedido').innerText.replace('Total: ','');
-    document.getElementById('totalEtapa3').innerText="Total: "+total;
+function checkPayment(){
+let pagamento = document.getElementById("pagamento").value;
+document.getElementById("trocoBox").style.display = pagamento === "Dinheiro" ? "block" : "none";
+document.getElementById("pixMessage").style.display = pagamento === "Pix" ? "block" : "none";
 }
 
-// Resumo do pedido
-function atualizarResumo(){
-    const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
-    let resumo="";
-    produtos.forEach(p=>{
-        const qtd=parseInt(document.getElementById("qtd_"+p).innerText);
-        if(qtd>0){
-            const milho=document.getElementById("milho_"+p)? (document.getElementById("milho_"+p).value==="true"?" com milho":" sem milho"):"";
-            const nomeFinal=p=="frango_requeijao"?"Empadão de Frango com Requeijão":p=="frango_catupiry"?"Empadão de Frango com Catupiry":p=="frango_simples"?"Empadão de Frango simples":p;
-            resumo+="- "+nomeFinal+milho+" x "+qtd+"<br>";
-        }
-    });
-    document.getElementById('resumoPedido').innerHTML=resumo || "Nenhum item selecionado.";
+function updateResumo(){
+let resumo = "";
+cart.forEach(item=>{
+resumo += item.nome+" - R$ "+item.preco.toFixed(2)+"<br>";
+});
+document.getElementById("resumo").innerHTML = resumo;
+updateTotal();
 }
 
-// Troco e Pix
-function verTroco(){
-    const tp=document.getElementById('pagamento').value;
-    document.getElementById('troco').style.display=(tp==='dinheiro')?'block':'none';
-    document.getElementById('pixInfo').style.display=(tp==='pix')?'block':'none';
+function finalizar(){
+
+let nome = document.getElementById("nome").value;
+let endereco = document.getElementById("endereco").value;
+let pagamento = document.getElementById("pagamento").value;
+let troco = document.getElementById("troco").value;
+
+let mensagem = "🛒 Pedido Cantinho do Empadão%0A%0A";
+
+cart.forEach(item=>{
+mensagem += item.nome+" - R$ "+item.preco.toFixed(2)+"%0A";
+});
+
+mensagem += "%0ATotal: R$ "+total.toFixed(2)+"%0A";
+mensagem += "Pagamento: "+pagamento+"%0A";
+
+if(pagamento==="Dinheiro" && troco){
+mensagem += "Troco para: "+troco+"%0A";
 }
 
-// Confirmar pedido
-function confirmarPedido(){
-    enviarWhatsApp();
-    document.getElementById('step3').style.display='none';
-    document.getElementById('mensagemFinal').style.display='block';
+mensagem += "%0ANome: "+nome+"%0AEndereço: "+endereco;
+
+window.open("https://wa.me/5521969592922?text="+mensagem);
+
+alert("Pedido confirmado! 🎉\nAgradecemos pela compra e preferência!");
 }
 
-// WhatsApp
-function enviarWhatsApp(){
-    const numero="5521969592922";
-    let msg="Olá, quero fazer um pedido:\n";
-    const produtos=["frango_requeijao","frango_catupiry","frango_simples","guaracrack","coca550","guarana550"];
-    produtos.forEach(p=>{
-        const qtd=parseInt(document.getElementById("qtd_"+p).innerText);
-        if(qtd>0){
-            const milho=document.getElementById("milho_"+p)? (document.getElementById("milho_"+p).value==="true"?" com milho":" sem milho"):"";
-            const nomeFinal=p=="frango_requeijao"?"Empadão de Frango com Requeijão":p=="frango_catupiry"?"Empadão de Frango com Catupiry":p=="frango_simples"?"Empadão de Frango simples":p;
-            msg+="- "+nomeFinal+milho+" x "+qtd+"\n";
-        }
-    });
-    const nome=document.getElementById('nome').value;
-    const telefone=document.getElementById('telefone').value;
-    const endereco=document.getElementById('endereco').value;
-    const pagamento=document.getElementById('pagamento').value;
-    const troco=document.getElementById('troco').value;
-    msg+="\nNome: "+nome+"\nTelefone: "+telefone+"\nEndereço: "+endereco+"\nPagamento: "+pagamento;
-    if(troco && pagamento==='dinheiro') msg+="\nTroco para: R$ "+troco;
-    if(pagamento==='pix') msg+="\nChave Pix: 48092363000120\nTitular: Cantinho do Empadão Ltda";
-    const url="https://wa.me/"+numero+"?text="+encodeURIComponent(msg);
-    window.open(url,"_blank");
-}
-
-window.onload=conferirHorario;
 </script>
+
 </body>
 </html>
