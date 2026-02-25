@@ -20,18 +20,14 @@ padding:20px;
 }
 
 .logo{
-width:180px;
+width:200px;
 display:block;
-margin:15px auto;
+margin:20px auto;
 }
 
-.container{
-padding:15px;
-}
+.container{ padding:15px; }
 
-h2{
-color:#c40000;
-}
+h2{ color:#c40000; }
 
 .card{
 background:white;
@@ -46,6 +42,29 @@ border:2px solid #c40000;
 background:#fff0f0;
 }
 
+.qty-control{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:10px;
+}
+
+.qty-btn{
+width:25px;
+height:25px;
+font-size:14px;
+padding:0;
+}
+
+.step{ display:none; }
+.active{ display:block; }
+
+.total{
+font-size:18px;
+font-weight:bold;
+margin-top:15px;
+}
+
 button{
 background:#c40000;
 color:white;
@@ -55,27 +74,14 @@ border-radius:6px;
 cursor:pointer;
 }
 
-button:hover{
-opacity:0.9;
-}
+button:hover{ opacity:0.9; }
 
-.qty{
-width:30px;
-text-align:center;
-}
-
-.step{
-display:none;
-}
-
-.active{
-display:block;
-}
-
-.total{
-font-size:18px;
-font-weight:bold;
-margin-top:10px;
+input, select{
+width:100%;
+padding:8px;
+margin-bottom:10px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 .pix-box{
@@ -100,46 +106,67 @@ font-size:14px;
 <!-- ETAPA 1 -->
 <div class="step active" id="step1">
 
-<h2>🔥 Promoção em Destaque</h2>
+<h2>🔥 Promoção</h2>
 
 <div class="card promo">
 <h3>FRANGO + GUARACRAC</h3>
-<p><strong>EMPADÃO DE FRANGO 500g + GUARACRAC 550ml</strong></p>
-<p><del>De R$ 20,00</del> <strong>por R$ 19,00</strong></p>
-<button onclick="addItem('Promo Frango + Guaracrack',19)">Adicionar</button>
+<p>Empadão 500g + Guaracrack</p>
+<p><del>R$ 20,00</del> <strong>R$ 19,00</strong></p>
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty('promo',19,-1)">-</button>
+<span id="qtd-promo">0</span>
+<button class="qty-btn" onclick="changeQty('promo',19,1)">+</button>
+</div>
 </div>
 
 <h2>🥧 Empadões 500g</h2>
 
 <div class="card">
-<h3>Frango Cremoso com Requeijão Crioulo - 500g</h3>
-<p>Massa amanteigada, feita com Qualy e trigo premium, dourada e saborosa.  
-Recheio bem cremoso de frango desfiado, cheiro-verde e requeijão crioulo.</p>
-<button onclick="addItem('Frango com Requeijão',20)">Adicionar</button>
+<h3>Frango Cremoso com Requeijão</h3>
+<p>Massa amanteigada premium com frango desfiado cremoso e requeijão crioulo.</p>
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty('requeijao',20,-1)">-</button>
+<span id="qtd-requeijao">0</span>
+<button class="qty-btn" onclick="changeQty('requeijao',20,1)">+</button>
+</div>
 </div>
 
 <div class="card">
-<h3>Frango com Catupiry - 500g</h3>
-<p>Massa amanteigada premium com recheio cremoso de frango desfiado e catupiry original.</p>
-<button onclick="addItem('Frango com Catupiry',20)">Adicionar</button>
+<h3>Frango com Catupiry</h3>
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty('catupiry',20,-1)">-</button>
+<span id="qtd-catupiry">0</span>
+<button class="qty-btn" onclick="changeQty('catupiry',20,1)">+</button>
+</div>
 </div>
 
 <div class="card">
-<h3>Frango Tradicional - 500g</h3>
-<p>Massa amanteigada premium com frango desfiado bem temperado e cheiro-verde.</p>
-<button onclick="addItem('Frango Tradicional',18)">Adicionar</button>
+<h3>Frango Tradicional</h3>
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty('tradicional',18,-1)">-</button>
+<span id="qtd-tradicional">0</span>
+<button class="qty-btn" onclick="changeQty('tradicional',18,1)">+</button>
+</div>
 </div>
 
 <h2>🥤 Bebidas</h2>
 
 <div class="card">
-<p>Coca-Cola Lata 550ml</p>
-<button onclick="addItem('Coca-Cola 550ml',6)">Adicionar</button>
+<h3>Coca-Cola Lata 550ml</h3>
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty('coca',6,-1)">-</button>
+<span id="qtd-coca">0</span>
+<button class="qty-btn" onclick="changeQty('coca',6,1)">+</button>
+</div>
 </div>
 
 <div class="card">
-<p>Guaracrack 550ml</p>
-<button onclick="addItem('Guaracrack 550ml',5)">Adicionar</button>
+<h3>Guaracrack</h3>
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty('guara',5,-1)">-</button>
+<span id="qtd-guara">0</span>
+<button class="qty-btn" onclick="changeQty('guara',5,1)">+</button>
+</div>
 </div>
 
 <div class="total">Total: R$ <span id="total">0.00</span></div>
@@ -149,20 +176,21 @@ Recheio bem cremoso de frango desfiado, cheiro-verde e requeijão crioulo.</p>
 
 </div>
 
-
 <!-- ETAPA 2 -->
 <div class="step" id="step2">
 
 <h2>📍 Seus Dados</h2>
 
-<input type="text" id="nome" placeholder="Seu Nome"><br><br>
-<input type="text" id="endereco" placeholder="Endereço completo"><br><br>
+<input type="text" id="nome" placeholder="Nome completo">
+<input type="text" id="endereco" placeholder="Rua">
+<input type="text" id="numero" placeholder="Número">
+<input type="text" id="bairro" placeholder="Bairro">
+<input type="text" id="referencia" placeholder="Ponto de referência">
 
 <button onclick="backStep(1)">Voltar</button>
 <button onclick="nextStep(3)">Continuar</button>
 
 </div>
-
 
 <!-- ETAPA 3 -->
 <div class="step" id="step3">
@@ -177,23 +205,21 @@ Recheio bem cremoso de frango desfiado, cheiro-verde e requeijão crioulo.</p>
 </select>
 
 <div id="trocoBox" style="display:none;">
-<br>
-<input type="text" id="troco" placeholder="Precisa de troco para quanto?">
+<input type="text" id="troco" placeholder="Troco para quanto?">
 </div>
 
 <div id="pixMessage" class="pix-box" style="display:none;">
-💳 <strong>Pagamento via Pix</strong><br><br>
-Para pedidos pelo Pix, por favor envie o comprovante após realizar o pagamento.<br><br>
-Nossa chave Pix é: <strong>48092363000120</strong><br>
+💳 Pagamento via Pix<br><br>
+Envie o comprovante após pagamento.<br><br>
+Chave Pix: <strong>48092363000120</strong><br>
 Titular: <strong>EMPADÕES LTDA</strong>
 </div>
 
-<h3>🧾 Seu Pedido:</h3>
+<h3>🧾 Resumo do Pedido:</h3>
 <div id="resumo"></div>
 
 <div class="total">Total Final: R$ <span id="totalFinal">0.00</span></div>
 
-<br>
 <button onclick="backStep(2)">Voltar</button>
 <button onclick="finalizar()">Confirmar Pedido</button>
 
@@ -203,24 +229,33 @@ Titular: <strong>EMPADÕES LTDA</strong>
 
 <script>
 
-let cart = [];
+let cart = {};
 let total = 0;
 
-function addItem(nome, preco){
-cart.push({nome, preco});
-total += preco;
-updateTotal();
+function changeQty(id, price, change){
+if(!cart[id]) cart[id]={qtd:0, price:price};
+
+cart[id].qtd += change;
+if(cart[id].qtd < 0) cart[id].qtd = 0;
+
+document.getElementById("qtd-"+id).innerText = cart[id].qtd;
+
+calculateTotal();
 }
 
-function updateTotal(){
+function calculateTotal(){
+total = 0;
+for(let item in cart){
+total += cart[item].qtd * cart[item].price;
+}
 document.getElementById("total").innerText = total.toFixed(2);
 document.getElementById("totalFinal").innerText = total.toFixed(2);
+updateResumo();
 }
 
 function nextStep(step){
 document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
 document.getElementById("step"+step).classList.add("active");
-updateResumo();
 }
 
 function backStep(step){
@@ -228,42 +263,51 @@ document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
 document.getElementById("step"+step).classList.add("active");
 }
 
-function checkPayment(){
-let pagamento = document.getElementById("pagamento").value;
-document.getElementById("trocoBox").style.display = pagamento === "Dinheiro" ? "block" : "none";
-document.getElementById("pixMessage").style.display = pagamento === "Pix" ? "block" : "none";
+function updateResumo(){
+let texto="";
+for(let item in cart){
+if(cart[item].qtd>0){
+texto+= item+" x"+cart[item].qtd+"<br>";
+}
+}
+document.getElementById("resumo").innerHTML = texto;
 }
 
-function updateResumo(){
-let resumo = "";
-cart.forEach(item=>{
-resumo += item.nome+" - R$ "+item.preco.toFixed(2)+"<br>";
-});
-document.getElementById("resumo").innerHTML = resumo;
-updateTotal();
+function checkPayment(){
+let pagamento=document.getElementById("pagamento").value;
+document.getElementById("trocoBox").style.display = pagamento==="Dinheiro"?"block":"none";
+document.getElementById("pixMessage").style.display = pagamento==="Pix"?"block":"none";
 }
 
 function finalizar(){
 
-let nome = document.getElementById("nome").value;
-let endereco = document.getElementById("endereco").value;
-let pagamento = document.getElementById("pagamento").value;
-let troco = document.getElementById("troco").value;
+let nome=document.getElementById("nome").value;
+let endereco=document.getElementById("endereco").value;
+let numero=document.getElementById("numero").value;
+let bairro=document.getElementById("bairro").value;
+let referencia=document.getElementById("referencia").value;
+let pagamento=document.getElementById("pagamento").value;
+let troco=document.getElementById("troco").value;
 
-let mensagem = "🛒 Pedido Cantinho do Empadão%0A%0A";
+let mensagem="🛒 Pedido Cantinho do Empadão%0A%0A";
 
-cart.forEach(item=>{
-mensagem += item.nome+" - R$ "+item.preco.toFixed(2)+"%0A";
-});
-
-mensagem += "%0ATotal: R$ "+total.toFixed(2)+"%0A";
-mensagem += "Pagamento: "+pagamento+"%0A";
-
-if(pagamento==="Dinheiro" && troco){
-mensagem += "Troco para: "+troco+"%0A";
+for(let item in cart){
+if(cart[item].qtd>0){
+mensagem+=item+" x"+cart[item].qtd+"%0A";
+}
 }
 
-mensagem += "%0ANome: "+nome+"%0AEndereço: "+endereco;
+mensagem+="%0ATotal: R$ "+total.toFixed(2)+"%0A";
+mensagem+="Pagamento: "+pagamento+"%0A";
+
+if(pagamento==="Dinheiro" && troco){
+mensagem+="Troco para: "+troco+"%0A";
+}
+
+mensagem+="%0ANome: "+nome+
+"%0AEndereço: "+endereco+", "+numero+
+"%0ABairro: "+bairro+
+"%0AReferência: "+referencia;
 
 window.open("https://wa.me/5521969592922?text="+mensagem);
 
