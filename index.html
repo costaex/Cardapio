@@ -6,231 +6,300 @@
 <title>Cantinho do Empadão</title>
 
 <style>
-:root{
-  --primary:#7a3e1d;
-  --secondary:#d9a441;
-  --bg:#ffffff;
-}
 
 body{
-  font-family: Arial, sans-serif;
-  background:#f6f6f6;
-  margin:0;
+font-family: 'Segoe UI', Arial, sans-serif;
+margin:0;
+background: linear-gradient(180deg,#5a2d0c,#3b1d08);
+color:#fff;
 }
 
 header{
-  background:var(--primary);
-  color:white;
-  text-align:center;
-  padding:15px;
+text-align:center;
+padding:20px 10px 10px 10px;
 }
 
-.logo{
-  width:120px;
-  margin-bottom:10px;
+header img{
+width:180px;
+max-width:90%;
+margin-bottom:5px;
 }
 
-h1{margin:5px 0;}
+header h2{
+margin:0;
+font-size:20px;
+font-weight:bold;
+letter-spacing:1px;
+}
 
-.etapa{display:none;padding:15px;}
-.ativa{display:block;}
+.container{
+padding:15px;
+padding-bottom:110px;
+}
 
 .card{
-  background:white;
-  border-radius:12px;
-  padding:15px;
-  margin-bottom:15px;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
+background:#ffffff;
+color:#333;
+padding:18px;
+margin-bottom:18px;
+border-radius:15px;
+box-shadow:0 6px 18px rgba(0,0,0,0.25);
+transition:0.2s;
 }
 
-.price{color:var(--primary);font-weight:bold;}
-
-.qty{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-top:10px;
+.card h4{
+margin-top:0;
+color:#5a2d0c;
 }
 
-.qty button{
-  background:var(--secondary);
-  border:none;
-  color:white;
-  width:28px;
-  height:28px;
-  border-radius:6px;
-  font-size:18px;
-}
-
-input,select{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
+input, select{
+width:100%;
+padding:10px;
+margin-top:6px;
+margin-bottom:10px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:15px;
 }
 
 button{
-  background:var(--primary);
-  color:white;
-  border:none;
-  width:100%;
-  padding:15px;
-  border-radius:10px;
-  margin-top:15px;
-  font-size:16px;
+flex:1;
+background:#d4a017;
+color:#000;
+border:none;
+padding:12px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+font-size:15px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:0.2s;
 }
 
-.carrinho-fixo{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:var(--primary);
-  color:white;
-  padding:12px;
-  text-align:center;
-  font-weight:bold;
+.nav-buttons{
+display:flex;
+gap:10px;
+margin-top:25px;
 }
+
+.carrinho-total{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#d4a017;
+color:#000;
+padding:15px;
+text-align:center;
+font-weight:bold;
+font-size:18px;
+box-shadow:0 -4px 15px rgba(0,0,0,0.4);
+}
+
+.etapa{
+display:none;
+}
+
+.etapa.ativa{
+display:block;
+}
+
+.etapa h3{
+border-left:4px solid #d4a017;
+padding-left:10px;
+}
+
 </style>
 </head>
-
 <body>
 
 <header>
-  <img src="Logoep.jpg" class="logo">
-  <h1>Cantinho do Empadão</h1>
+<img src="Logoep.jpg">
+<h2>Cantinho do Empadão</h2>
 </header>
+
+<div class="container">
 
 <!-- ETAPA 1 -->
 <div class="etapa ativa" id="etapa1">
-<h2>1️⃣ Escolha seus produtos</h2>
+<h3>Etapa 1 - Escolher Itens</h3>
 
 <div class="card">
-<h3>Empadão Frango com Catupiry</h3>
-<p class="price">R$ 18,99</p>
-
-<label><input type="radio" name="milho_cat" value="Com milho"> Com milho</label><br>
-<label><input type="radio" name="milho_cat" value="Sem milho"> Sem milho</label>
-
-<div class="qty">
-<button onclick="alterar('cat',-1,18.99)">-</button>
-<span id="cat">0</span>
-<button onclick="alterar('cat',1,18.99)">+</button>
-</div>
+<h4>Empadão de Frango - R$18,99</h4>
+<label><input type="checkbox" id="milho1"> Com milho</label>
+<label><input type="checkbox" id="semMilho1"> Sem milho</label>
+Quantidade:
+<input type="number" id="qtd1" value="0" min="0">
 </div>
 
 <div class="card">
-<h3>Empadão Frango com Requeijão</h3>
-<p class="price">R$ 18,99</p>
-
-<label><input type="radio" name="milho_req" value="Com milho"> Com milho</label><br>
-<label><input type="radio" name="milho_req" value="Sem milho"> Sem milho</label>
-
-<div class="qty">
-<button onclick="alterar('req',-1,18.99)">-</button>
-<span id="req">0</span>
-<button onclick="alterar('req',1,18.99)">+</button>
+<h4>Combo Frango + Catupiry + Coca Lata - R$23,99</h4>
+Quantidade:
+<input type="number" id="qtd2" value="0" min="0">
 </div>
-</div>
-
-<h3>🔥 Combos R$ 23,99</h3>
 
 <div class="card">
-<h3>Combo Catupiry + Coca</h3>
-<p class="price">R$ 23,99</p>
-<div class="qty">
-<button onclick="alterar('combo1',-1,23.99)">-</button>
-<span id="combo1">0</span>
-<button onclick="alterar('combo1',1,23.99)">+</button>
-</div>
+<h4>Combo Frango + Requeijão + Guaraná Lata - R$23,99</h4>
+Quantidade:
+<input type="number" id="qtd3" value="0" min="0">
 </div>
 
-<button onclick="proxima(2)">Continuar</button>
+<div class="nav-buttons">
+<button onclick="proxima(2)">Próxima Etapa</button>
+</div>
 </div>
 
 <!-- ETAPA 2 -->
 <div class="etapa" id="etapa2">
-<h2>2️⃣ Dados e Pagamento</h2>
+<h3>Etapa 2 - Endereço</h3>
 
-<input id="nome" placeholder="Nome">
-<input id="endereco" placeholder="Endereço">
-<input id="bairro" placeholder="Bairro">
-<input id="referencia" placeholder="Ponto de referência">
+Nome:
+<input type="text" id="nome">
 
-<select id="pagamento" onchange="verPix()">
-<option>Débito</option>
-<option>Crédito</option>
-<option>Pix</option>
-<option>Dinheiro</option>
-</select>
+Endereço:
+<input type="text" id="endereco">
 
-<p id="pixmsg" style="display:none;color:var(--primary);font-weight:bold">
-💳 Pagamento via Pix<br>
-Chave: 48092363000120
-</p>
+Bairro:
+<input type="text" id="bairro">
 
-<button onclick="proxima(3)">Continuar</button>
+Ponto de Referência:
+<input type="text" id="referencia">
+
+<div class="nav-buttons">
+<button onclick="voltar(1)">Voltar</button>
+<button onclick="proxima(3)">Próxima Etapa</button>
+</div>
 </div>
 
 <!-- ETAPA 3 -->
 <div class="etapa" id="etapa3">
-<h2>3️⃣ Finalizar Pedido</h2>
-<div id="resumo" class="card"></div>
-<button onclick="enviarWhats()">Finalizar Pedido</button>
+<h3>Etapa 3 - Forma de Pagamento</h3>
+
+<select id="pagamento" onchange="verificarPagamento()">
+<option value="">Selecione</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Pix">Pix</option>
+</select>
+
+<div id="trocoDiv" style="display:none;">
+Precisa de troco?
+<input type="text" id="troco">
 </div>
 
-<div class="carrinho-fixo">
-🛒 Total: R$ <span id="total">0.00</span>
+<div id="pixDiv" style="display:none;">
+Chave Pix: 21969592922<br>
+⚠️ Enviar comprovante para o pedido ser preparado.
+</div>
+
+<div class="nav-buttons">
+<button onclick="voltar(2)">Voltar</button>
+<button onclick="proxima(4)">Próxima Etapa</button>
+</div>
+</div>
+
+<!-- ETAPA 4 -->
+<div class="etapa" id="etapa4">
+<h3>Etapa 4 - Resumo do Pedido</h3>
+<div id="resumo"></div>
+
+<div class="nav-buttons">
+<button onclick="voltar(3)">Voltar</button>
+<button onclick="enviarPedido()">Finalizar Pedido</button>
+</div>
+</div>
+
+</div>
+
+<div class="carrinho-total">
+Total: R$ <span id="total">0.00</span>
 </div>
 
 <script>
+
+function proxima(num){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById('etapa'+num).classList.add('ativa');
+if(num==4) gerarResumo();
+}
+
+function voltar(num){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById('etapa'+num).classList.add('ativa');
+}
+
+function verificarPagamento(){
+let pag=document.getElementById('pagamento').value;
+document.getElementById('trocoDiv').style.display=(pag=="Dinheiro")?"block":"none";
+document.getElementById('pixDiv').style.display=(pag=="Pix")?"block":"none";
+}
+
+function calcular(){
 let total=0;
-
-function alterar(id,v,p){
-let e=document.getElementById(id);
-let n=parseInt(e.innerText);
-if(n+v>=0){
-e.innerText=n+v;
-total+=v*p;
-if(total<0)total=0;
-document.getElementById("total").innerText=total.toFixed(2);
-}
+total+=qtd1.value*18.99;
+total+=qtd2.value*23.99;
+total+=qtd3.value*23.99;
+document.getElementById('total').innerText=total.toFixed(2);
+return total;
 }
 
-function proxima(n){
-if(n===2 && total<18){
-alert("Pedido mínimo R$ 18,00");
+document.querySelectorAll('input').forEach(i=>i.addEventListener('input',calcular));
+
+function gerarResumo(){
+let total=calcular();
+let taxa=0;
+
+if(bairro.value.toLowerCase()!="marambaia"){
+taxa=5;
+}
+
+if(total<18){
+alert("Pedido mínimo é R$18,00");
+voltar(1);
 return;
 }
-document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
-document.getElementById("etapa"+n).classList.add('ativa');
-if(n===3)resumo();
+
+let final=total+taxa;
+
+let resumoHTML="Itens:<br>";
+
+if(qtd1.value>0){
+let milho="";
+if(milho1.checked) milho=" (com milho)";
+if(semMilho1.checked) milho=" (sem milho)";
+resumoHTML+=qtd1.value+"x Empadão"+milho+"<br>";
 }
 
-function verPix(){
-pixmsg.style.display=pagamento.value==="Pix"?"block":"none";
+if(qtd2.value>0){
+resumoHTML+=qtd2.value+"x Combo Catupiry<br>";
 }
 
-function resumo(){
-let b=bairro.value.toLowerCase();
-let taxa=b && b!=="marambaia"?5:0;
-resumo.innerHTML=`
-<strong>Subtotal:</strong> R$ ${total.toFixed(2)}<br>
-<strong>Taxa:</strong> R$ ${taxa.toFixed(2)}<br>
-<strong>Total:</strong> R$ ${(total+taxa).toFixed(2)}
-`;
+if(qtd3.value>0){
+resumoHTML+=qtd3.value+"x Combo Requeijão<br>";
 }
 
-function enviarWhats(){
-let taxa=bairro.value.toLowerCase()!=="marambaia"?5:0;
-let m="🧾 *NOVO PEDIDO*%0A";
-m+=`Empadão Catupiry: ${cat.innerText} (${document.querySelector('input[name=milho_cat]:checked')?.value||"N/I"})%0A`;
-m+=`Empadão Requeijão: ${req.innerText} (${document.querySelector('input[name=milho_req]:checked')?.value||"N/I"})%0A`;
-m+=`Subtotal: R$ ${total.toFixed(2)}%0A`;
-m+=`Taxa: R$ ${taxa.toFixed(2)}%0A`;
-m+=`*Total: R$ ${(total+taxa).toFixed(2)}*%0A`;
-m+=`Pagamento: ${pagamento.value}`;
-window.open("https://wa.me/5521969592922?text="+m);
+resumoHTML+="<br>Subtotal: R$"+total.toFixed(2);
+if(taxa>0) resumoHTML+="<br>Taxa: R$5,00";
+resumoHTML+="<br><strong>Total Final: R$"+final.toFixed(2)+"</strong>";
+
+document.getElementById('resumo').innerHTML=resumoHTML;
 }
+
+function enviarPedido(){
+
+let texto="NOVO PEDIDO%0A%0A";
+
+texto+="Nome: "+nome.value+"%0A";
+texto+="Endereço: "+endereco.value+"%0A";
+texto+="Bairro: "+bairro.value+"%0A";
+texto+="Referência: "+referencia.value+"%0A%0A";
+
+texto+=document.getElementById('resumo').innerText.replace(/\n/g,"%0A");
+
+let url="https://wa.me/5521969592922?text="+texto;
+window.open(url);
+
+}
+
 </script>
 
 </body>
