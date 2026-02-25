@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Empadaria</title>
+<title>Cantinho do Empadão</title>
 
 <style>
 body{
     font-family: Arial, sans-serif;
     background:#f5f5f5;
     margin:0;
-    padding:0;
 }
 header{
     background:#d60000;
     color:white;
     padding:15px;
     text-align:center;
-    font-size:22px;
-    font-weight:bold;
 }
-.container{
+header h1{
+    margin:0;
+}
+.etapa{
+    display:none;
     padding:15px;
+}
+.ativa{
+    display:block;
 }
 .card{
     background:white;
@@ -30,13 +34,9 @@ header{
     margin-bottom:15px;
     box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
-.card h3{
-    margin:0;
-}
 .price{
     color:#d60000;
     font-weight:bold;
-    margin-top:5px;
 }
 .qty{
     display:flex;
@@ -50,7 +50,6 @@ header{
     width:30px;
     height:30px;
     border-radius:5px;
-    font-size:18px;
 }
 .qty span{
     margin:0 10px;
@@ -59,17 +58,14 @@ input, select{
     width:100%;
     padding:10px;
     margin-top:10px;
-    border-radius:5px;
-    border:1px solid #ccc;
 }
-button.finalizar{
+button{
     background:#d60000;
     color:white;
     border:none;
     padding:15px;
     width:100%;
     border-radius:8px;
-    font-size:16px;
     margin-top:15px;
 }
 </style>
@@ -77,39 +73,38 @@ button.finalizar{
 
 <body>
 
-<header>🔥 Combos - R$ 23,99</header>
+<header>
+<h1>🥧 Cantinho do Empadão</h1>
+</header>
 
-<div class="container">
-
-<h2>🥧 Empadões - R$ 18,99</h2>
+<!-- ETAPA 1 -->
+<div class="etapa ativa" id="etapa1">
+<h2>1️⃣ Escolha seus produtos</h2>
 
 <div class="card">
 <h3>Frango com Catupiry</h3>
-<p>Massa amanteigada feita com Qualy e trigo premium. Recheio cremoso de frango desfiado com catupiry e cheiro-verde.</p>
 <p class="price">R$ 18,99</p>
 <div class="qty">
-<button onclick="alterar('catupiry',-1)">-</button>
-<span id="catupiry">0</span>
-<button onclick="alterar('catupiry',1)">+</button>
+<button onclick="alterar('cat',-1)">-</button>
+<span id="cat">0</span>
+<button onclick="alterar('cat',1)">+</button>
 </div>
 </div>
 
 <div class="card">
 <h3>Frango com Requeijão</h3>
-<p>Massa amanteigada feita com Qualy e trigo premium. Recheio cremoso de frango desfiado com requeijão crioulo e cheiro-verde.</p>
 <p class="price">R$ 18,99</p>
 <div class="qty">
-<button onclick="alterar('requeijao',-1)">-</button>
-<span id="requeijao">0</span>
-<button onclick="alterar('requeijao',1)">+</button>
+<button onclick="alterar('req',-1)">-</button>
+<span id="req">0</span>
+<button onclick="alterar('req',1)">+</button>
 </div>
 </div>
 
-<header>🔥 Combos - R$ 23,99</header>
+<h3>🔥 Combos - R$ 23,99</h3>
 
 <div class="card">
 <h3>Combo Catupiry + Coca</h3>
-<p>Empadão frango com catupiry + Coca-Cola lata</p>
 <p class="price">R$ 23,99</p>
 <div class="qty">
 <button onclick="alterar('combo1',-1)">-</button>
@@ -120,7 +115,6 @@ button.finalizar{
 
 <div class="card">
 <h3>Combo Requeijão + Guaraná</h3>
-<p>Empadão frango com requeijão + Guaraná lata</p>
 <p class="price">R$ 23,99</p>
 <div class="qty">
 <button onclick="alterar('combo2',-1)">-</button>
@@ -129,47 +123,19 @@ button.finalizar{
 </div>
 </div>
 
-<h2>🥤 Bebidas</h2>
-
-<div class="card">
-<h3>Coca-Cola lata</h3>
-<p class="price">R$ 5,00</p>
-<div class="qty">
-<button onclick="alterar('coca',-1)">-</button>
-<span id="coca">0</span>
-<button onclick="alterar('coca',1)">+</button>
-</div>
+<button onclick="proxima(2)">Continuar</button>
 </div>
 
-<div class="card">
-<h3>Guaraná lata</h3>
-<p class="price">R$ 5,00</p>
-<div class="qty">
-<button onclick="alterar('guarana',-1)">-</button>
-<span id="guarana">0</span>
-<button onclick="alterar('guarana',1)">+</button>
-</div>
-</div>
-
-<div class="card">
-<h3>Guaracrack</h3>
-<p class="price">R$ 2,00</p>
-<div class="qty">
-<button onclick="alterar('guaracrack',-1)">-</button>
-<span id="guaracrack">0</span>
-<button onclick="alterar('guaracrack',1)">+</button>
-</div>
-</div>
-
-<h2>📋 Dados para entrega</h2>
+<!-- ETAPA 2 -->
+<div class="etapa" id="etapa2">
+<h2>2️⃣ Dados e Pagamento</h2>
 
 <input type="text" id="nome" placeholder="Seu nome">
 <input type="text" id="endereco" placeholder="Endereço">
 <input type="text" id="bairro" placeholder="Bairro">
 <input type="text" id="referencia" placeholder="Ponto de referência">
 
-<h2>💳 Forma de pagamento</h2>
-
+<h3>Forma de Pagamento</h3>
 <select id="pagamento" onchange="verPix()">
 <option>Débito</option>
 <option>Crédito</option>
@@ -177,47 +143,76 @@ button.finalizar{
 <option>Dinheiro</option>
 </select>
 
-<p id="pixmsg" style="display:none; color:#d60000; font-weight:bold;">
+<p id="pixmsg" style="display:none;color:#d60000;font-weight:bold;">
 💳 Pagamento via Pix<br>
 Envie o comprovante após o pagamento.<br>
 Chave Pix: 48092363000120
 </p>
 
-<button class="finalizar" onclick="finalizar()">Finalizar Pedido</button>
+<button onclick="proxima(3)">Continuar</button>
+</div>
 
+<!-- ETAPA 3 -->
+<div class="etapa" id="etapa3">
+<h2>3️⃣ Finalizar Pedido</h2>
+
+<p id="resumo"></p>
+
+<button onclick="enviarWhats()">Finalizar e Enviar</button>
 </div>
 
 <script>
 
 function alterar(id,valor){
-let el = document.getElementById(id);
-let atual = parseInt(el.innerText);
-if(atual + valor >= 0){
-el.innerText = atual + valor;
+let el=document.getElementById(id);
+let atual=parseInt(el.innerText);
+if(atual+valor>=0){
+el.innerText=atual+valor;
+}
+}
+
+function proxima(num){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById("etapa"+num).classList.add('ativa');
+
+if(num===3){
+gerarResumo();
 }
 }
 
 function verPix(){
-let forma = document.getElementById("pagamento").value;
-let msg = document.getElementById("pixmsg");
-msg.style.display = forma === "Pix" ? "block" : "none";
+let forma=document.getElementById("pagamento").value;
+document.getElementById("pixmsg").style.display = forma==="Pix"?"block":"none";
 }
 
-function finalizar(){
+function gerarResumo(){
 
-let bairro = document.getElementById("bairro").value.toLowerCase();
-let taxa = 0;
+let bairro=document.getElementById("bairro").value.toLowerCase();
+let taxa = bairro && bairro !== "marambaia" ? 5 : 0;
 
-if(bairro && bairro !== "marambaia"){
-taxa = 5;
+let total =
+(parseInt(cat.innerText)*18.99)+
+(parseInt(req.innerText)*18.99)+
+(parseInt(combo1.innerText)*23.99)+
+(parseInt(combo2.innerText)*23.99)+
+taxa;
+
+document.getElementById("resumo").innerHTML=
+"Total: R$ "+total.toFixed(2)+
+"<br>Taxa de entrega: R$ "+taxa.toFixed(2);
 }
 
-if(taxa > 0){
-alert("Taxa de entrega para seu bairro: R$ 5,00");
-}else{
-alert("Entrega grátis para Marambaia 🎉");
-}
+function enviarWhats(){
 
+let nome=document.getElementById("nome").value;
+let bairro=document.getElementById("bairro").value;
+
+let mensagem="Pedido - Cantinho do Empadão%0A";
+mensagem+="Cliente: "+nome+"%0A";
+mensagem+="Bairro: "+bairro+"%0A";
+
+let url="https://wa.me/5521999999999?text="+mensagem;
+window.open(url,"_blank");
 }
 
 </script>
