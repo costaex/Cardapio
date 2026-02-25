@@ -17,8 +17,14 @@ header{
     padding:15px;
     text-align:center;
 }
-header h1{
-    margin:0;
+.logo{
+    width:90px;
+    margin-bottom:10px;
+}
+.carrinho-topo{
+    background:#b30000;
+    padding:8px;
+    font-size:14px;
 }
 .etapa{
     display:none;
@@ -68,13 +74,22 @@ button{
     border-radius:8px;
     margin-top:15px;
 }
+.resumo-box{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
+<img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="logo">
 <h1>🥧 Cantinho do Empadão</h1>
+<div class="carrinho-topo">
+🛒 Total no Carrinho: R$ <span id="totalTopo">0.00</span>
+</div>
 </header>
 
 <!-- ETAPA 1 -->
@@ -85,9 +100,9 @@ button{
 <h3>Frango com Catupiry</h3>
 <p class="price">R$ 18,99</p>
 <div class="qty">
-<button onclick="alterar('cat',-1)">-</button>
+<button onclick="alterar('cat',-1,18.99)">-</button>
 <span id="cat">0</span>
-<button onclick="alterar('cat',1)">+</button>
+<button onclick="alterar('cat',1,18.99)">+</button>
 </div>
 </div>
 
@@ -95,9 +110,9 @@ button{
 <h3>Frango com Requeijão</h3>
 <p class="price">R$ 18,99</p>
 <div class="qty">
-<button onclick="alterar('req',-1)">-</button>
+<button onclick="alterar('req',-1,18.99)">-</button>
 <span id="req">0</span>
-<button onclick="alterar('req',1)">+</button>
+<button onclick="alterar('req',1,18.99)">+</button>
 </div>
 </div>
 
@@ -107,9 +122,9 @@ button{
 <h3>Combo Catupiry + Coca</h3>
 <p class="price">R$ 23,99</p>
 <div class="qty">
-<button onclick="alterar('combo1',-1)">-</button>
+<button onclick="alterar('combo1',-1,23.99)">-</button>
 <span id="combo1">0</span>
-<button onclick="alterar('combo1',1)">+</button>
+<button onclick="alterar('combo1',1,23.99)">+</button>
 </div>
 </div>
 
@@ -117,9 +132,9 @@ button{
 <h3>Combo Requeijão + Guaraná</h3>
 <p class="price">R$ 23,99</p>
 <div class="qty">
-<button onclick="alterar('combo2',-1)">-</button>
+<button onclick="alterar('combo2',-1,23.99)">-</button>
 <span id="combo2">0</span>
-<button onclick="alterar('combo2',1)">+</button>
+<button onclick="alterar('combo2',1,23.99)">+</button>
 </div>
 </div>
 
@@ -149,40 +164,45 @@ Envie o comprovante após o pagamento.<br>
 Chave Pix: 48092363000120
 </p>
 
+<h3>🌽 Deseja milho?</h3>
+<label><input type="radio" name="milho" value="Com milho"> Com milho</label><br>
+<label><input type="radio" name="milho" value="Sem milho"> Sem milho</label>
+
 <button onclick="proxima(3)">Continuar</button>
 </div>
 
 <!-- ETAPA 3 -->
 <div class="etapa" id="etapa3">
 <h2>3️⃣ Finalizar Pedido</h2>
-
-<p id="resumo"></p>
-
+<div class="resumo-box" id="resumo"></div>
 <button onclick="enviarWhats()">Finalizar e Enviar</button>
 </div>
 
 <script>
 
-function alterar(id,valor){
+let total = 0;
+
+function alterar(id,valor,preco){
 let el=document.getElementById(id);
 let atual=parseInt(el.innerText);
+
 if(atual+valor>=0){
 el.innerText=atual+valor;
+total += valor*preco;
+if(total<0) total=0;
+document.getElementById("totalTopo").innerText = total.toFixed(2);
 }
 }
 
 function proxima(num){
 document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
 document.getElementById("etapa"+num).classList.add('ativa');
-
-if(num===3){
-gerarResumo();
-}
+if(num===3) gerarResumo();
 }
 
 function verPix(){
 let forma=document.getElementById("pagamento").value;
-document.getElementById("pixmsg").style.display = forma==="Pix"?"block":"none";
+document.getElementById("pixmsg").style.display = forma==="Pix"?"block":"block" && forma==="Pix";
 }
 
 function gerarResumo(){
@@ -190,28 +210,74 @@ function gerarResumo(){
 let bairro=document.getElementById("bairro").value.toLowerCase();
 let taxa = bairro && bairro !== "marambaia" ? 5 : 0;
 
-let total =
-(parseInt(cat.innerText)*18.99)+
-(parseInt(req.innerText)*18.99)+
-(parseInt(combo1.innerText)*23.99)+
-(parseInt(combo2.innerText)*23.99)+
-taxa;
+let subtotal = total;
+let totalFinal = subtotal + taxa;
 
-document.getElementById("resumo").innerHTML=
-"Total: R$ "+total.toFixed(2)+
-"<br>Taxa de entrega: R$ "+taxa.toFixed(2);
+let resumoItens = "";
+
+function addItem(nome,id,preco){
+let qtd = parseInt(document.getElementById(id).innerText);
+if(qtd>0){
+resumoItens += `${qtd}x ${nome} - R$ ${(qtd*preco).toFixed(2)}<br>`;
+}
+}
+
+addItem("Empadão Frango com Catupiry","cat",18.99);
+addItem("Empadão Frango com Requeijão","req",18.99);
+addItem("Combo Catupiry + Coca","combo1",23.99);
+addItem("Combo Requeijão + Guaraná","combo2",23.99);
+
+document.getElementById("resumo").innerHTML = `
+<strong>Itens do Pedido:</strong><br>
+${resumoItens}
+<hr>
+Subtotal: R$ ${subtotal.toFixed(2)}<br>
+Taxa: R$ ${taxa.toFixed(2)}<br>
+<strong>Total Final: R$ ${totalFinal.toFixed(2)}</strong>
+`;
 }
 
 function enviarWhats(){
 
 let nome=document.getElementById("nome").value;
+let endereco=document.getElementById("endereco").value;
 let bairro=document.getElementById("bairro").value;
+let referencia=document.getElementById("referencia").value;
+let pagamento=document.getElementById("pagamento").value;
 
-let mensagem="Pedido - Cantinho do Empadão%0A";
-mensagem+="Cliente: "+nome+"%0A";
-mensagem+="Bairro: "+bairro+"%0A";
+let bairroLower=bairro.toLowerCase();
+let taxa = bairroLower && bairroLower !== "marambaia" ? 5 : 0;
+let totalFinal = total + taxa;
 
-let url="https://wa.me/5521999999999?text="+mensagem;
+let milho = document.querySelector('input[name="milho"]:checked');
+let opcMilho = milho ? milho.value : "Não informado";
+
+let mensagem="🧾 *NOVO PEDIDO* %0A%0A";
+
+function addItemZap(nome,id,preco){
+let qtd = parseInt(document.getElementById(id).innerText);
+if(qtd>0){
+mensagem += `• ${qtd}x ${nome} - R$ ${(qtd*preco).toFixed(2)}%0A`;
+}
+}
+
+addItemZap("Empadão Frango com Catupiry","cat",18.99);
+addItemZap("Empadão Frango com Requeijão","req",18.99);
+addItemZap("Combo Catupiry + Coca","combo1",23.99);
+addItemZap("Combo Requeijão + Guaraná","combo2",23.99);
+
+mensagem += `%0A🌽 Milho: ${opcMilho}%0A`;
+mensagem += `%0ASubtotal: R$ ${total.toFixed(2)}%0A`;
+mensagem += `Taxa: R$ ${taxa.toFixed(2)}%0A`;
+mensagem += `*Total Final: R$ ${totalFinal.toFixed(2)}*%0A%0A`;
+
+mensagem += `👤 Nome: ${nome}%0A`;
+mensagem += `📍 Endereço: ${endereco}%0A`;
+mensagem += `🏘 Bairro: ${bairro}%0A`;
+mensagem += `📌 Referência: ${referencia}%0A`;
+mensagem += `💳 Pagamento: ${pagamento}%0A`;
+
+let url="https://wa.me/5521969592922?text="+mensagem;
 window.open(url,"_blank");
 }
 
