@@ -450,8 +450,8 @@ function gerarResumo(){
 let total=parseFloat(document.getElementById("total").innerText);
 let taxa=(bairro.value.toLowerCase()=="marambaia")?0:5;
 
-if(total<18){
-alert("Pedido mínimo R$18");
+if(total<13){
+alert("Pedido mínimo R$13");
 voltar(1);
 return;
 }
