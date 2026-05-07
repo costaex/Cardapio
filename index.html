@@ -6,33 +6,36 @@
 <title>Cantinho do Empadão</title>
 
 <style>
-body{
-font-family:'Segoe UI',Arial,sans-serif;
+*{
 margin:0;
-background:#f5f5f7;
-color:#222;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',Arial,sans-serif;
+}
+
+body{
+background:#0f0f0f;
+color:#fff;
 }
 
 header{
 text-align:center;
-padding:20px 10px;
-background:#fff;
-box-shadow:0 2px 10px rgba(0,0,0,0.06);
-position:sticky;
-top:0;
-z-index:99;
+padding:25px 15px;
+background:#111;
+border-bottom:2px solid #ff7b00;
+box-shadow:0 4px 18px rgba(0,0,0,0.5);
 }
 
 header img{
-width:140px;
-border-radius:20px;
+width:170px;
+border-radius:22px;
 }
 
 header h2{
-margin:8px 0 0;
-font-size:24px;
-color:#ff6b00;
-font-weight:700;
+margin-top:10px;
+font-size:32px;
+font-weight:900;
+color:#ff7b00;
 }
 
 .status{
@@ -43,24 +46,23 @@ font-size:15px;
 }
 
 .aberto{
-background:#19c37d;
+background:#1db954;
 color:#fff;
 }
 
 .fechado{
-background:#ff4d4f;
+background:#ff3b30;
 color:#fff;
 }
 
 .horario-box{
-background:#fff;
-color:#333;
-padding:16px;
-border-radius:18px;
+background:#181818;
+border:1px solid #2d2d2d;
+padding:18px;
+border-radius:20px;
 margin:15px;
 font-size:14px;
-box-shadow:0 4px 14px rgba(0,0,0,0.08);
-line-height:1.7;
+line-height:1.8;
 }
 
 .container{
@@ -68,64 +70,61 @@ padding:15px;
 padding-bottom:130px;
 }
 
+h3{
+font-size:28px;
+margin-bottom:15px;
+color:#ff7b00;
+font-weight:900;
+}
+
+h4{
+font-size:22px;
+margin:20px 0 12px;
+color:#ff7b00;
+font-weight:900;
+}
+
 .promocao{
-background:linear-gradient(90deg,#ff7a00,#ff9900);
-color:#fff;
-padding:10px;
+background:linear-gradient(90deg,#ff7b00,#ff9d00);
+padding:12px;
 text-align:center;
 font-weight:bold;
-border-radius:14px;
-margin-bottom:12px;
-font-size:14px;
-letter-spacing:0.5px;
+border-radius:16px;
+margin-bottom:15px;
 }
 
 .card{
-background:#fff;
-color:#222;
-padding:16px;
-margin-bottom:16px;
-border-radius:22px;
-box-shadow:0 4px 18px rgba(0,0,0,0.08);
-transition:0.2s;
-border:1px solid #f1f1f1;
-}
-
-.card:hover{
-transform:translateY(-2px);
+background:#181818;
+padding:18px;
+margin-bottom:18px;
+border-radius:24px;
+border:1px solid #2b2b2b;
 }
 
 .card h4{
 margin:0;
-color:#111;
-font-size:17px;
-font-weight:700;
+color:#fff;
+font-size:20px;
 }
 
 .descricao{
-font-size:13px;
-margin:10px 0;
-color:#666;
-line-height:1.5;
+font-size:14px;
+margin:12px 0;
+color:#cfcfcf;
+line-height:1.7;
 }
 
 button{
-background:linear-gradient(90deg,#ff7a00,#ff9900);
+background:linear-gradient(90deg,#ff7b00,#ff9d00);
 color:#fff;
 border:none;
-padding:12px;
-border-radius:14px;
+padding:14px;
+border-radius:16px;
 font-weight:bold;
 cursor:pointer;
 margin-top:10px;
 width:100%;
 font-size:15px;
-transition:0.2s;
-}
-
-button:hover{
-opacity:0.92;
-transform:scale(1.01);
 }
 
 .nav-buttons{
@@ -136,16 +135,10 @@ margin-top:20px;
 
 .etapa{
 display:none;
-animation:fade .2s ease;
 }
 
 .etapa.ativa{
 display:block;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(5px);}
-to{opacity:1;transform:translateY(0);}
 }
 
 .carrinho-total{
@@ -153,65 +146,374 @@ position:fixed;
 bottom:0;
 left:0;
 right:0;
-background:#fff;
-color:#111;
-padding:16px;
+background:#111;
+color:#fff;
+padding:18px;
 text-align:center;
 font-weight:bold;
-font-size:18px;
-box-shadow:0 -4px 15px rgba(0,0,0,0.1);
-border-top-left-radius:22px;
-border-top-right-radius:22px;
+font-size:22px;
+border-top:2px solid #ff7b00;
 }
 
 #total{
-color:#ff6b00;
-font-size:20px;
+color:#ff7b00;
+font-size:24px;
 }
 
 .item-carrinho{
-background:#fff;
-color:#111;
+background:#1d1d1d;
+color:#fff;
 padding:12px;
-margin-bottom:8px;
+margin-bottom:10px;
 border-radius:14px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-border:1px solid #f0f0f0;
 }
 
 .lixeira{
 cursor:pointer;
 font-size:18px;
+font-weight:bold;
+color:#ff7b00;
 }
 
 input,select{
 width:100%;
 padding:14px;
 border-radius:14px;
-border:1px solid #ddd;
+border:1px solid #2d2d2d;
 margin-bottom:12px;
+background:#1a1a1a;
+color:#fff;
 font-size:15px;
-background:#fff;
-box-sizing:border-box;
 outline:none;
-transition:0.2s;
 }
 
-input:focus,
-select:focus{
-border-color:#ff7a00;
-box-shadow:0 0 0 3px rgba(255,122,0,0.15);
-}
-
-h3{
-color:#111;
-margin-bottom:15px;
-}
-
-h4{
-color:#ff6b00;
+#resumo{
+background:#181818;
+padding:18px;
+border-radius:18px;
+line-height:1.8;
+white-space:pre-line;
 }
 </style>
+</head>
+<body>
+
+<header>
+<img src="Logoep.jpg">
+<h2>Cantinho do Empadão</h2>
+</header>
+
+<div id="statusLoja" class="status"></div>
+
+<div class="horario-box">
+<strong>Nosso horário de funcionamento:</strong><br>
+• Domingo: 17:00 - 23:00<br>
+• Segunda-feira: Fechada<br>
+• Terça-feira: 17:00 - 23:00<br>
+• Quarta-feira: 19:00 - 23:30<br>
+• Quinta-feira: 19:00 - 23:30<br>
+• Sexta-feira: 19:00 - 23:30<br>
+• Sábado: 17:00 - 23:00
+</div>
+
+<div class="container">
+
+<div class="etapa ativa" id="etapa1">
+<h3>Etapa 1 - Escolher Itens</h3>
+
+<h4>🔥 Promoção</h4>
+
+<div class="promocao">PROMOÇÃO ESPECIAL</div>
+
+<div class="card">
+<h4>Empadão de Requeijão 500g + Guaracrack - R$21,00</h4>
+<div class="descricao">
+Massa amanteigada feita com Qualy e trigo premium.
+Recheio cremoso de frango com requeijão e cheiro-verde.
+</div>
+<button onclick="adicionarItem('Combo Requeijão + Guaracrack',21)">Adicionar</button>
+</div>
+
+<h4>Empadões</h4>
+
+<div class="card">
+<h4>Frango Cremoso com Requeijão 150g - R$11,99</h4>
+<div class="descricao">Recheio cremoso de frango desfiado com cheiro-verde.</div>
+<button onclick="adicionarItem('Empadão Frango Requeijão',11.99)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Frango Cremoso com Catupiry 150g - R$11,99</h4>
+<div class="descricao">Recheio cremoso de frango desfiado com cheiro-verde.</div>
+<button onclick="adicionarItem('Empadão Frango Catupiry',11.99)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Frango Cremoso 150g - R$11,99</h4>
+<div class="descricao">Recheio cremoso de frango desfiado com cheiro-verde.</div>
+<button onclick="adicionarItem('Empadão Frango Cremoso',11.99)">Adicionar</button>
+</div>
+
+<h4>Empadões de 500G</h4>
+
+<div class="card">
+<h4>Camarão Cremoso 500g - R$20,00</h4>
+<div class="descricao">Recheio cremoso de camarão com cheiro-verde.</div>
+<button onclick="adicionarItem('Empadão Camarão Cremoso',20)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Frango Cremoso 500g - R$20,00</h4>
+<div class="descricao">Recheio cremoso de frango desfiado com cheiro-verde.</div>
+<button onclick="adicionarItem('Empadão Frango Cremoso 500g',20)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Frango Cremoso com Catupiry 500g - R$20,00</h4>
+<div class="descricao">Recheio cremoso de frango com catupiry e cheiro-verde.</div>
+<button onclick="adicionarItem('Empadão Frango Catupiry 500g',20)">Adicionar</button>
+</div>
+
+<h4>Combos 23,99</h4>
+
+<div class="card">
+<h4>Empadão Catupiry 500g + Coca Lata - R$23,99</h4>
+<button onclick="adicionarItem('Combo Catupiry + Coca',23.99)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Empadão Requeijão 500g + Guaraná Lata - R$23,99</h4>
+<button onclick="adicionarItem('Combo Requeijão + Guaraná',23.99)">Adicionar</button>
+</div>
+
+<h4>Bebidas</h4>
+
+<div class="card">
+<h4>Guaracrack - R$2,00</h4>
+<button onclick="adicionarItem('Guaracrack',2)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Coca Cola Lata - R$7,00</h4>
+<button onclick="adicionarItem('Coca Cola Lata',7)">Adicionar</button>
+</div>
+
+<div class="card">
+<h4>Guaraná Lata - R$7,00</h4>
+<button onclick="adicionarItem('Guaraná Lata',7)">Adicionar</button>
+</div>
+
+<div id="listaCarrinho"></div>
+
+<div class="nav-buttons">
+<button onclick="proxima(2)">Próxima</button>
+</div>
+</div>
+
+<div class="etapa" id="etapa2">
+<h3>Etapa 2 - Endereço</h3>
+<input type="text" id="nome" placeholder="Nome">
+<input type="text" id="endereco" placeholder="Endereço">
+<input type="text" id="bairro" placeholder="Bairro">
+<input type="text" id="referencia" placeholder="Ponto de referência">
+
+<div class="nav-buttons">
+<button onclick="voltar(1)">Voltar</button>
+<button onclick="proxima(3)">Próxima</button>
+</div>
+</div>
+
+<div class="etapa" id="etapa3">
+<h3>Etapa 3 - Forma de Pagamento</h3>
+
+<select id="pagamento" onchange="verificarPagamento()">
+<option value="Débito">Débito</option>
+<option value="Crédito">Crédito</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Pix">Pix</option>
+</select>
+
+<div id="trocoDiv" style="display:none;">
+<input type="text" id="troco" placeholder="Troco para quanto?">
+</div>
+
+<div id="pixDiv" style="display:none;">
+Chave Pix: 48092363000120<br>
+Enviar comprovante para o pedido ser preparado.
+</div>
+
+<div class="nav-buttons">
+<button onclick="voltar(2)">Voltar</button>
+<button onclick="proxima(4)">Próxima</button>
+</div>
+</div>
+
+<div class="etapa" id="etapa4">
+<h3>Etapa 4 - Resumo</h3>
+<div id="resumo"></div>
+
+<div class="nav-buttons">
+<button onclick="voltar(3)">Voltar</button>
+<button onclick="enviarPedido()">Finalizar Pedido</button>
+</div>
+</div>
+
+</div>
+
+<div class="carrinho-total">
+Total: R$ <span id="total">0.00</span>
+</div>
+
+<script>
+let carrinho=[];
+
+const SENHA="1442";
+let params=new URLSearchParams(window.location.search);
+let modoAdmin=params.get("adm")===SENHA;
+
+function obterHorarioHoje(){
+let dia=new Date().getDay();
+if(dia==1) return null;
+if(dia==0) return {inicio:17,fim:23};
+if(dia==2) return {inicio:17,fim:23};
+if(dia==3) return {inicio:19,fim:23.5};
+if(dia==4) return {inicio:19,fim:23.5};
+if(dia==5) return {inicio:19,fim:23.5};
+if(dia==6) return {inicio:17,fim:23};
+return null;
+}
+
+function dentroDoHorario(){
+if(modoAdmin) return true;
+let h=obterHorarioHoje();
+if(!h) return false;
+let agora=new Date();
+let atual=agora.getHours()+(agora.getMinutes()/60);
+return atual>=h.inicio && atual<=h.fim;
+}
+
+function atualizarStatus(){
+let status=document.getElementById("statusLoja");
+if(modoAdmin){
+status.innerHTML="MODO ADMIN ATIVO";
+status.className="status aberto";
+return;
+}
+if(dentroDoHorario()){
+status.innerHTML="Estamos Abertos";
+status.className="status aberto";
+}else{
+status.innerHTML="Estamos Fechados";
+status.className="status fechado";
+}
+}
+
+function bloquear(){
+if(!dentroDoHorario()){
+alert("Estamos fechados no momento.");
+return true;
+}
+return false;
+}
+
+function adicionarItem(nome,preco){
+if(bloquear()) return;
+carrinho.push({nome,preco});
+renderCarrinho();
+}
+
+function removerItem(i){
+carrinho.splice(i,1);
+renderCarrinho();
+}
+
+function renderCarrinho(){
+let lista=document.getElementById("listaCarrinho");
+lista.innerHTML="";
+let total=0;
+
+carrinho.forEach((item,i)=>{
+total+=item.preco;
+lista.innerHTML+=`
+<div class="item-carrinho">
+<span>${item.nome} - R$${item.preco.toFixed(2)}</span>
+<span class="lixeira" onclick="removerItem(${i})">X</span>
+</div>`;
+});
+
+document.getElementById("total").innerText=total.toFixed(2);
+}
+
+function proxima(n){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById('etapa'+n).classList.add('ativa');
+
+if(n==4){
+gerarResumo();
+}
+}
+
+function voltar(n){
+document.querySelectorAll('.etapa').forEach(e=>e.classList.remove('ativa'));
+document.getElementById('etapa'+n).classList.add('ativa');
+}
+
+function verificarPagamento(){
+let pag=pagamento.value;
+trocoDiv.style.display=(pag=="Dinheiro")?"block":"none";
+pixDiv.style.display=(pag=="Pix")?"block":"none";
+}
+
+function gerarResumo(){
+let total=parseFloat(document.getElementById("total").innerText);
+let taxa=(bairro.value.toLowerCase()=="marambaia")?0:7;
+
+if(total<13){
+alert("Pedido mínimo R$13");
+voltar(1);
+return;
+}
+
+let final=total+taxa;
+let texto="NOVO PEDIDO\n\n";
+
+carrinho.forEach(item=> texto+="1x "+item.nome+"\n");
+
+texto+="\nSubtotal: R$"+total.toFixed(2);
+
+if(taxa>0){
+texto+="\nTAXA DE ENTREGA: R$7,00";
+}
+
+texto+="\nTotal: R$"+final.toFixed(2);
+
+document.getElementById("resumo").innerText=texto;
+}
+
+function enviarPedido(){
+if(bloquear()) return;
+
+let texto=document.getElementById("resumo").innerText;
+
+texto+="\n\nNome: "+nome.value;
+texto+="\nEndereço: "+endereco.value;
+texto+="\nBairro: "+bairro.value;
+texto+="\nReferência: "+referencia.value;
+texto+="\nPagamento: "+pagamento.value;
+
+if(troco.value){
+texto+="\nTroco para: "+troco.value;
+}
+
+window.open("https://wa.me/5521969592922?text="+encodeURIComponent(texto));
+}
+
+atualizarStatus();
+setInterval(atualizarStatus,60000);
+</script>
+
+</body>
+</html>
